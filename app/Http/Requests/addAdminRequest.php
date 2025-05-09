@@ -30,6 +30,8 @@ class addAdminRequest extends FormRequest
             'last_name' => 'required|string|min:2|max:50',
             'email' => 'required|email|unique:users,email|max:255',
             'password' => 'required|min:8|max:64|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/',
+            'password_confirmation' => 'required|same:password',
+
             'phone' => 'nullable|string|min:8|max:20',
             'gender' => ['required', Rule::enum(Gender::class)], // Assurez-vous que Gender::class existe
         ];

@@ -158,7 +158,7 @@ public function restoreAdmin($admin_id) {
 
     //filtre
 public function getAdmins(Request $request) {
-            $admins = User::role('admin')
+            $admins = User::role('admin')->where('status', '!=', 'Deleted')
             ->get();
         
         return response()->json([

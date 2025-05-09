@@ -37,20 +37,54 @@ class PetSitterController extends Controller
             'deleted_at' => $petSitter->deleted_at ? $petSitter->deleted_at->format('d/m/Y H:i:s') : null,
         ]);
     }
-    public function addPetSitter(addPetSitterRequest $request) {
-        $data = $request->validated();
-        //status actif automatiquement des la creation
-        $data['status'] = UserStatut::Active->value;
-        $petSitter = User::create($data);
-        //lui attribuer le role:
-        $petSitter->assignRole('petsitter');
-        //affichage
-        return response()->json([
-            'success' => true,
-            'message' => 'PetSitter ajouté avec succès',
-            'petSitter' => new PetSitterResource($petSitter)
+    public function addPetSitter(addPetSitterRequest $request)
+{
+    $data = $request->validated();
+      // Gérer le fichier
+      if ($request->hasFile('ACACED')) {
+        $file = $request->file('ACACED');
+        $path = $file->store('ACACED', 'public'); // stocke dans storage/app/public/justificatifs
+        $data['ACACED'] = $path;
+    }
+
+    // Définir le statut actif
+    $data['status'] = UserStatut::Active->value;
+
+    // Créer le pet-sitter
+    $petSitter = User::create($data);
+
+    // Attribuer le rôle
+    $petSitter->assignRole('petsitter');
+
+    // Ajouter l’adresse personnelle
+    $petSitter->adresses()->create([
+        'city' => $data['personal_address']['city'],
+        'street' => $data['personal_address']['street'],
+        'zipcode' => $data['personal_address']['zipcode'],
+        'address_type' => 'personal',
+    ]);
+
+    // Ajouter l’adresse de chenil si fournie
+    if (!empty($data['kennel_address']['city']) &&
+        !empty($data['kennel_address']['street']) &&
+        !empty($data['kennel_address']['zipcode'])) {
+
+        $petSitter->adresses()->create([
+            'city' => $data['kennel_address']['city'],
+            'street' => $data['kennel_address']['street'],
+            'zipcode' => $data['kennel_address']['zipcode'],
+            'address_type' => 'kennel',
         ]);
     }
+
+    // Réponse
+    return response()->json([
+        'success' => true,
+        'message' => 'PetSitter ajouté avec succès',
+        'petSitter' => new PetSitterResource($petSitter)
+    ]);
+}
+
     public function addAdress(addAdressRequest $request, $id) {
         $petSitter = User::role('petsitter')->findOrFail($id);
 
@@ -132,17 +166,27 @@ class PetSitterController extends Controller
     
    
     public function deletePetSitter($id)  {
-        $admin = User::role('petsitter')->findOrfail($id);
-        $admin->status = UserStatut::Deleted->value;  //statut devient supprime
-        $admin->save();
-        $admin->delete();
+        $sitter = User::role('petsitter')->findOrfail($id);
+        $sitter->status = UserStatut::Deleted->value;  //statut devient supprime
+        $sitter->save();
+        $sitter->delete();
 
         return response()->json([
             'success' => true,
             'message' => 'PetSitter supprimé avec succés'
         ], 200);   
     }
+ public function deletePetOwner($id)  {
+        $owner = User::role('petowner')->findOrfail($id);
+        $owner->status = UserStatut::Deleted->value;  //statut devient supprime
+        $owner->save();
+        $owner->delete();
 
+        return response()->json([
+            'success' => true,
+            'message' => 'PetOwner supprimé avec succés'
+        ], 200);   
+}
     public function restorePetSitter($id){
         $admin = User::role('petsitter')->withTrashed()->findOrfail($id);
         $admin->restore();
@@ -183,7 +227,8 @@ class PetSitterController extends Controller
         ]);
     }
 public function getSitterByStatut($status) {
-    $petSitters = User::role('petsitter')
+    $petSitters = User::withTrashed()         // Inclut les soft‑deleted
+    ->role('petsitter')
         ->where('status', $status)
         ->get();
 

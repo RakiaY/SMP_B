@@ -19,23 +19,23 @@ class PetController extends Controller
 {
    public function getPets(){
         $pets=Pet::all();
-        return  PetResource::collection($pets);
+        return  response()->json([
+            'Pets' => PetResource::collection($pets),
+        ]);
    }
     public function getPetById($id){
           $pet=Pet::findOrFail($id);
-          return new PetResource($pet);
+return response()->json([
+    'pet' => new PetResource($pet->load('petMedia')),
+]);
     }
 
-    public function addPet(addPetRequest $request , $owner_id){
+    public function addPet(addPetRequest $request ){
 
-        $owner = User::role('petowner')->findOrFail($owner_id);
-        if (!$owner) {
-            return response()->json(['msg' => 'donnez un id dun petOwner svp'], 404);
-        }
+        $owner = User::role('petowner')->findOrFail($request->pet_owner_id);
+
 
         $data = $request->validated();
-        $data['pet_owner_id'] = $owner->id;
-
 
         
 

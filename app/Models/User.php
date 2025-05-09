@@ -76,6 +76,11 @@ class User extends Authenticatable
     {
         return $this->hasMany(Pet::class, 'pet_owner_id');
     }
+    public function adresses()
+{
+    return $this->hasMany(Address::class);
+}
+
     
     function isAdmin()
     {

@@ -26,7 +26,8 @@ class addPetRequest extends FormRequest
     {
         return [
             // Vérifiez que l'utilisateur a le rôle "petowner"
-            
+            'pet_owner_id' => 'required|exists:users,id',
+
             'name' => 'required|string|max:255',
             'type' => 'required|in:' . implode(',', PetType::values()),
             'breed' => 'required',

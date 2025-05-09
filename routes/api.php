@@ -28,7 +28,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::put('/admins/update/{admin_id}', [SuperAdminController::class, 'updateAdmin']);
         Route::put('/admins/updateStatus/{admin_id}', [SuperAdminController::class, 'updateStatusAdmin']);
         Route::delete('/admins/delete/{admin_id}', [SuperAdminController::class, 'deleteAdmin']);
-        Route::post('/admins/restore/{admin_id}', [SuperAdminController::class, 'restoreTrashedAdmin']);
+        Route::post('/admins/restore/{admin_id}', [SuperAdminController::class, 'restoreAdmin']);
         Route::delete('/admins/forceDelete/{admin_id}', [SuperAdminController::class, 'forceDeleteAdmin']);
         Route::get('/admins/getByEmailOrPhone/{email_or_phone}', [SuperAdminController::class, 'getAdminByEmailOrPhone']);
         Route::get('/admins/getByStatut/{status}', [SuperAdminController::class, 'getAdminByStatut']);
@@ -67,5 +67,8 @@ Route::post('/petsitters/addAdress/{id}', [PetSitterController::class, 'addAdres
 
 Route::get('/pets', action: [PetController::class, 'getPets']);
 Route::get('/pets/{id}', action: [PetController::class, 'getPetById']);
-Route::post(uri: '/pets/add/{id}', action: [PetController::class, 'addPet']);
+Route::post(uri: '/pets/add', action: [PetController::class, 'addPet']);
 Route::put(uri: '/pets/update/{id}', action: [PetController::class, 'updatePet']);
+Route::get('/pets/search/{type_name_gender}', action: [PetController::class, 'searchByTypeNameGender']);
+Route::delete(uri: '/pets/delete/{id}', action: [PetController::class, 'deletePet']);
+

@@ -35,4 +35,5 @@ class DatabaseSeeder extends Seeder
         // 3. Attribuer le rôle (version sécurisée)
         $superAdmin->assignRole('super_admin');
     }
+
 }

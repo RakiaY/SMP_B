@@ -172,9 +172,10 @@ public function forceDeletePetOwner($id) {
     }
 public function getOwnerByStatut($status)
     {
-        $petOwners = User::role('petowner')
-            ->where('status', $status)
-            ->get();
+        $petOwners = User::withTrashed()         // Inclut les soft‑deleted
+        ->role('petowner')
+        ->where('status', $status)
+        ->get();
 
         if ($petOwners->isEmpty()) {
             return response()->json(['message' => 'Aucun PetOwner avec ce statut'], 404);

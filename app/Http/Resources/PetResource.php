@@ -33,6 +33,8 @@ class PetResource extends JsonResource
             'has_contagious_diseases'        => $this->has_contagious_diseases,
             'has_medical_file'        => $this->has_medical_file,
             'is_critical_condition'        => $this->is_critical_condition,
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
              // 👇 Ajout des médias
              'medias' => $this->whenLoaded('petMedias', function () {
     return $this->petMedias->map(function ($media) {
