@@ -8,6 +8,10 @@ use App\Http\Middleware\SuperAdminMiddleware;
 use App\Http\Controllers\PetOwnerController;
 use App\Http\Controllers\PetSitterController;
 use App\Http\Controllers\PetController;
+use App\Http\Controllers\SearchSitterController;
+use App\Http\Controllers\PostulationController;
+
+
 
 Route::get('/test', function() {
     return response()->json(['status' => 'api ymchi cv']);
@@ -72,3 +76,10 @@ Route::put(uri: '/pets/update/{id}', action: [PetController::class, 'updatePet']
 Route::get('/pets/search/{type_name_gender}', action: [PetController::class, 'searchByTypeNameGender']);
 Route::delete(uri: '/pets/delete/{id}', action: [PetController::class, 'deletePet']);
 
+
+Route::post(uri: '/SearchSitter/add', action: [SearchSitterController::class, 'addSerach']);
+Route::get('/SearchSitter', action: [SearchSitterController::class, 'getSearchs']);
+Route::put(uri: '/SearchSitter/update/{id}', action: [SearchSitterController::class, 'updateSearch']);
+
+Route::post(uri: '/postulations/add', action: [PostulationController::class, 'addPostulation']);
+Route::get('/postulations', action: [PostulationController::class, 'getPostulations']);

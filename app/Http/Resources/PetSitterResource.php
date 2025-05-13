@@ -19,14 +19,28 @@ class PetSitterResource extends JsonResource
             'first_name' => $this->first_name,
             'last_name' => $this->last_name,
             'email' => $this->email,
-            'phone' => $this->phone, 
+            'phone' => $this->phone,
+            'gender' => $this->gender, 
+ 
+
             'status' => $this->status,
             'experience' => $this->experience,
             'personalQualities' => $this->personalQualities,
             'skills' => $this->skills,
             'profilePictureURL' => $this->profilePictureURL,
+
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
+             'personal_address' => [
+            'city' => $this->personalAddress->city ?? '',
+            'street' => $this->personalAddress->street ?? '',
+            'zipcode' => $this->personalAddress->zipcode ?? '',
+        ],
+        'kennel_address' => [
+            'city' => $this->kennelAddress->city ?? '',
+            'street' => $this->kennelAddress->street ?? '',
+            'zipcode' => $this->kennelAddress->zipcode ?? '',
+        ],
         ];
     }
 }
