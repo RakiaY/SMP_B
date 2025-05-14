@@ -18,7 +18,8 @@ Route::get('/test', function() {
 });
 
 Route::post('/login', [AuthController::class, 'login']);
-
+Route::post('/registerpetowner', [AuthController::class, 'registerPetOwner']);
+Route::post('/registerpetsitter', [AuthController::class, 'registerPetSitter']);
 
 
 
