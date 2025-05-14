@@ -51,6 +51,7 @@ public function updateStatusAdmin(Request $request, $admin_id) {
         ]);
     }
 public function updateAdmin($admin_id, Request $request){
+    
     $admin = User::role('admin')->findOrFail($admin_id);
 
     $validator = Validator::make($request->all(), [

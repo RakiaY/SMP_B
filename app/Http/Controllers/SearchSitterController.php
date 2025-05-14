@@ -49,7 +49,6 @@ class SearchSitterController extends Controller
 
     public function updateSearch(Request $request, $id)
     {
-        $search = SearchSitter::findOrFail($id);
        
         $search = SearchSitter::findOrFail($id);
         $data = $request->validate([
@@ -72,13 +71,56 @@ class SearchSitterController extends Controller
             'search' => new SearchResource($search),
         ]);
     }
+    public function deleteSearch($id)
+    {
+        $search = SearchSitter::findOrFail($id);
+        $search->delete();
+        return response()->json([
+            'message' => 'Search deleted successfully',
+        ]);
+    }
+    public function getSearchById($id)
+    {
+        $search = SearchSitter::with(['user', 'pet'])->findOrFail($id);
+        return response()->json([
+            'search' => new SearchResource($search),
+            'created_at' => $search->created_at->format('d/m/Y H:i:s'),
+            'updated_at' => $search->updated_at->format('d/m/Y H:i:s'),
+        ]);
+    }
 
+   public function getByOwnerName_StartDate($nameOrgardeType)
+{
+    $search = SearchSitter::with(['user'])
+        ->where(function ($query) use ($nameOrgardeType) {
+            // Recherche par nom de l'utilisateur (prénom ou nom)
+            $query->whereHas('user', function ($query) use ($nameOrgardeType) {
+                $query->where('first_name', 'like', "%$nameOrgardeType%")
+                      ->orWhere('last_name', 'like', "%$nameOrgardeType%");
+            })
+            // Recherche par date de début (start_date)
+            ->orWhere('care_type', 'like', "%$nameOrgardeType%");
+        })
+        ->get();
 
+    return response()->json([
+        'searchs' => SearchResource::collection($search),
+    ]);
+}
 
-
-
-
+    
+      
 
 
 
 }
+    
+
+
+
+
+
+
+
+
+

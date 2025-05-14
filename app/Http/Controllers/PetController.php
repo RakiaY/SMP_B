@@ -29,6 +29,16 @@ class PetController extends Controller
     'pet' => new PetResource($pet),
 ]);
     }
+    // PetController.php
+public function getPetsByOwner($id)
+{
+    // Vérification si l'utilisateur a le rôle 'petowner'
+    $owner = User::role('petowner')->findOrFail($id);
+    $pets = Pet::with('user')->where('pet_owner_id', $id)->get();
+            return  response()->json([
+            'Pets' => PetResource::collection($pets),
+        ]);}
+
 
   public function addPet(addPetRequest $request ){
 

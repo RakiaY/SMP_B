@@ -18,8 +18,10 @@ class SearchResource extends JsonResource
             'id' => $this->id,
             'user_id' => $this->user_id,
             'pet_id' => $this->pet_id,
-         'user_name' => $this->user->first_name . ' ' . $this->user->last_name,
-        'pet_name' => $this->pet->name,
+            'user_name' => $this->user->first_name . ' ' . $this->user->last_name,
+            'pet_name' => $this->pet->name,
+                        'pet_type' => $this->pet->type,
+
 
                 'adresse' => $this->adresse,
                 'latitude' => $this->latitude,

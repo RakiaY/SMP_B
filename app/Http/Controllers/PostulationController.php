@@ -12,45 +12,69 @@ use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 class PostulationController extends Controller
 {
-  public function addPostulation(Request $request)
-{
-    try {
-        $data = $request->validate([
-            'sitter_id' => 'required|exists:users,id',
-            'search_id' => 'required|exists:search_pet_sitters,id',
-            'statut' => 'required|string|in:en_attente,acceptee,refusee',
-        ]);
-    } catch (ValidationException $e) {
-        return response()->json([
-            'message' => 'Erreur de validation',
-            'errors' => $e->errors()
-        ], 400); // ici on force le code 400 au lieu du 422
-    }
-    // Vérifie si l'utilisateur un pet-sitter
-    $sitter = User::find($data['sitter_id']);
 
-if (!$sitter || !$sitter->hasRole('petsitter')) {
-    return response()->json(['error' => 'L\'utilisateur n\'est pas un pet-sitter'], 403);
-}
-
-
-    $postulation = Postulation::create($data);
-
-$postulation->load('search.user'); // Charge search et son user
-
-        return response()->json([
-            'postulation' => new PostulationResource($postulation),
-        ]);
-            
-    }
 
 
     public function getPostulations()
     {
-        $postulations = Postulation::with('sitter', 'search')->where('statut', '!=', 'Canceled')->get();
+        $postulations = Postulation::with('sitter', 'search' )->get();
         return response()->json([
             'Postulations' => PostulationResource::collection($postulations),
         ]);
     }
+
+    public function addPostulation(addPostulationRequest $request)
+{
+    $data = $request->validated();
+    $data['statut'] = 'en_attente'; 
+
+    $Postulations = [];
+
+    foreach ($data['pet_sitter_ids'] as $sitterId) {
+
+        // 🔎 Vérifier si une postulation existe déjà
+        $exists = Postulation::where('search_id', $data['search_id'])
+            ->where('sitter_id', $sitterId)
+            ->exists();
+
+        if ($exists) {
+            // Option 1 : Ignorer les doublons
+            continue;
+
+            // Option 2 : Retourner une erreur
+            // return response()->json([
+            //     'message' => "Le pet-sitter ID $sitterId a déjà postulé à cette recherche."
+            // ], 409);
+        }
+
+        // ✅ Créer la postulation
+        $postulation = Postulation::create([
+            'search_id' => $data['search_id'],
+            'sitter_id' => $sitterId,
+            'statut' => $data['statut'],
+        ]);
+
+        $Postulations[] = $postulation;
+    }
+
+    return response()->json([
+        'Postulations' => PostulationResource::collection($Postulations)
+    ]);
+}
+ public function updatePostulationStatut(Request $request, $id){
+    $data = $request->validate([
+        'statut' => 'required|string|in:en_attente,acceptée, validée, en cours, terminée,annulée',
+    ]);
+        $postulation = Postulation::findOrFail($id);
+
+        $postulation->statut = $request->statut;
+        $postulation->save();
+
+    return response()->json([
+        'postulation' => new PostulationResource($postulation),
+    ]);
+ }
+
+
 
 }

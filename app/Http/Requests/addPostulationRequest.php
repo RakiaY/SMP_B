@@ -22,9 +22,10 @@ class addPostulationRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'sitter_id' => 'required|exists:users,id',
-        'search_id' => 'required|exists:search_pet_sitters,id',
-        'statut' => 'required|string|in:en_attente,acceptee,refusee',
+            'search_id' => 'required|exists:search_pet_sitters,id',
+        'pet_sitter_ids' => 'required|array|min:1',
+        'pet_sitter_ids.*' => 'exists:users,id',
+        //'statut' => 'required|string|in:en_attente,acceptée, validée, en cours, terminée,annulée',
             //
         ];
     }

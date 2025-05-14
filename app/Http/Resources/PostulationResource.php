@@ -17,9 +17,9 @@ class PostulationResource extends JsonResource
         return [ 
     'id' => $this->id,
     'sitter_id' => $this->sitter_id,
+    'sitter_name' => $this->sitter->first_name . ' ' . $this->sitter->last_name,
     'search_id' => $this->search_id,
-  // a refaire 
-  // 'owner_name' => $this->search && $this->search->user? $this->search->user->first_name . ' ' . $this->search->user->last_name: null,
+    'owner_name' => $this->search->user->first_name . ' ' . $this->search->user->last_name,
 
     'statut' => $this->statut,
     'created_at' => $this->created_at,
