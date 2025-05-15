@@ -3,9 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\User;
+use App\Models\Address;
 use App\Http\Requests\LoginRequest;
 use Illuminate\Support\Facades\Auth;
-use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Resources\LoginResource;
 use App\Http\Resources\PetOwnerResource;
@@ -14,6 +15,7 @@ use App\Http\Requests\addPetOwnerRequest;
 use App\Http\Requests\addPetSitterRequest;
 use App\Enums\UserStatut;
 
+use App\Http\Requests\addAdressRequest;
 
 
 class AuthController extends Controller
@@ -82,7 +84,7 @@ public function registerPetOwner(addPetOwnerRequest $request) {
         $petSitter->assignRole('petsitter');
 
         // Ajouter l’adresse personnelle
-        $petSitter->adresses()->create([
+        $petSitter->personalAddress()->create([
             'city' => $data['personal_address']['city'],
             'street' => $data['personal_address']['street'],
             'zipcode' => $data['personal_address']['zipcode'],
@@ -94,7 +96,7 @@ public function registerPetOwner(addPetOwnerRequest $request) {
             !empty($data['kennel_address']['street']) &&
             !empty($data['kennel_address']['zipcode'])) {
 
-            $petSitter->adresses()->create([
+            $petSitter->kennelAddress()->create([
                 'city' => $data['kennel_address']['city'],
                 'street' => $data['kennel_address']['street'],
                 'zipcode' => $data['kennel_address']['zipcode'],

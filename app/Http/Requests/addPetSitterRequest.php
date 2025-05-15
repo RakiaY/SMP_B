@@ -41,7 +41,7 @@ class addPetSitterRequest extends FormRequest
     'experience' => 'nullable|string|max:500',
     'personalQualities' => 'nullable|string|max:500',
     'skills' => 'nullable|string|max:500',
-    'ACACED' => 'required|file|mimes:pdf,jpg,jpeg,png|max:2048',
+    'ACACED' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:2048',
 
         // Adresse personnelle (obligatoire)
         'personal_address.city' => 'required|string|max:100',
