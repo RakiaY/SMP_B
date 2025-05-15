@@ -8,13 +8,18 @@ use App\Http\Middleware\SuperAdminMiddleware;
 use App\Http\Controllers\PetOwnerController;
 use App\Http\Controllers\PetSitterController;
 use App\Http\Controllers\PetController;
+use App\Http\Controllers\SearchSitterController;
+use App\Http\Controllers\PostulationController;
+
+
 
 Route::get('/test', function() {
     return response()->json(['status' => 'api ymchi cv']);
 });
 
 Route::post('/login', [AuthController::class, 'login']);
-
+Route::post('/registerpetowner', [AuthController::class, 'registerPetOwner']);
+Route::post('/registerpetsitter', [AuthController::class, 'registerPetSitter']);
 
 
 
@@ -71,4 +76,21 @@ Route::post(uri: '/pets/add', action: [PetController::class, 'addPet']);
 Route::put(uri: '/pets/update/{id}', action: [PetController::class, 'updatePet']);
 Route::get('/pets/search/{type_name_gender}', action: [PetController::class, 'searchByTypeNameGender']);
 Route::delete(uri: '/pets/delete/{id}', action: [PetController::class, 'deletePet']);
+Route::get('/pets/owner/{id}', action: [PetController::class, 'getPetsByOwner']);
+
+
+Route::post(uri: '/SearchSitter/add', action: [SearchSitterController::class, 'addSerach']);
+Route::get('/SearchSitter', action: [SearchSitterController::class, 'getSearchs']);
+Route::put(uri: '/SearchSitter/update/{id}', action: [SearchSitterController::class, 'updateSearch']);
+Route::delete(uri: '/SearchSitter/delete/{id}', action: [SearchSitterController::class, 'deleteSearch']);
+Route::get('/SearchSitter/{id}', action: [SearchSitterController::class, 'getSearchById']);
+Route::get('/SearchSitter/search/{nameOrgardeType}', action: [SearchSitterController::class, 'getByOwnerName_StartDate']);
+
+
+
+Route::post(uri: '/postulations/add', action: [PostulationController::class, 'addPostulation']);
+Route::get('/postulations', action: [PostulationController::class, 'getPostulations']);
+Route::post(uri: '/postulations/addMultiple', action: [PostulationController::class, 'addPostulation']);
+Route::put('/postulations/updateStatut/{id}', [PostulationController::class, 'updateStatut']);
+
 

@@ -29,9 +29,9 @@ class addPetSitterRequest extends FormRequest
     'first_name' => 'required|string|min:2|max:50',
     'last_name' => 'required|string|min:2|max:50',
     'email' => 'required|email|unique:users,email|max:255',
-    'gender' => ['required', Rule::enum(Gender::class)], 
+    'gender' => 'required|string|min:2|max:50',
     'phone' => 'required|string|min:8|max:20',
-    'birth_date' => 'required|date|date_format:Y-m-d|before:today',
+    'birth_date' => 'nullable|date|date_format:Y-m-d|before:today',
     'profilePictureURL' => 'nullable|file|mimes:jpg,jpeg,png|max:2048',
     
      'password' => 'required|min:8|max:64|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/',
@@ -44,9 +44,9 @@ class addPetSitterRequest extends FormRequest
     'ACACED' => 'required|file|mimes:pdf,jpg,jpeg,png|max:2048',
 
         // Adresse personnelle (obligatoire)
-        'personal_address.city' => 'nullable|string|max:100',
-        'personal_address.street' => 'nullable|string|max:255',
-        'personal_address.zipcode' => 'nullable|string|max:20',
+        'personal_address.city' => 'required|string|max:100',
+        'personal_address.street' => 'required|string|max:255',
+        'personal_address.zipcode' => 'required|string|max:20',
 
         // Adresse de chenil (optionnelle)
         'kennel_address.city' => 'nullable|string|max:100',

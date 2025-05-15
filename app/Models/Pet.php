@@ -36,7 +36,7 @@ use Illuminate\Database\Eloquent\Model;
 class Pet extends Model
 {
 	protected $table = 'pets';
-	public $timestamps = false;
+	public $timestamps = true;
 
 	protected $casts = [
 		'pet_owner_id' => 'int',

@@ -188,6 +188,9 @@ public function getOwnerByStatut($status)
 
     
 
+
+
+    
    
 
 }

@@ -8,6 +8,13 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Resources\LoginResource;
+use App\Http\Resources\PetOwnerResource;
+use App\Http\Resources\PetSitterResource;
+use App\Http\Requests\addPetOwnerRequest;
+use App\Http\Requests\addPetSitterRequest;
+use App\Enums\UserStatut;
+
+
 
 class AuthController extends Controller
 {
@@ -37,6 +44,71 @@ class AuthController extends Controller
         'message' => 'User logged in successfully'
     ]);
 }
+public function registerPetOwner(addPetOwnerRequest $request) {
+        $data = $request->validated();
+        //status actif automatiquement des la creation
+        $data['status'] = UserStatut::Active->value;
+        $petowner = User::create($data);
+
+        //attribuer le role:
+        $petowner->assignRole('petowner');
+
+        //affichage 
+        return response()->json([
+            'success' => true,
+            'message' => 'PetOwner ajouté avec succès',
+            'petowner' => new PetOwnerResource($petowner)
+        ]);
+    }
+
+    
+
+    public function registerPetSitter(addPetSitterRequest $request){
+        $data = $request->validated();
+        // Gérer le fichier
+        if ($request->hasFile('ACACED')) {
+            $file = $request->file('ACACED');
+            $path = $file->store('ACACED', 'public'); // stocke dans storage/app/public/justificatifs
+            $data['ACACED'] = $path;
+        }
+
+        // Définir le statut actif
+        $data['status'] = UserStatut::Active->value;
+
+        // Créer le pet-sitter
+        $petSitter = User::create($data);
+
+        // Attribuer le rôle
+        $petSitter->assignRole('petsitter');
+
+        // Ajouter l’adresse personnelle
+        $petSitter->adresses()->create([
+            'city' => $data['personal_address']['city'],
+            'street' => $data['personal_address']['street'],
+            'zipcode' => $data['personal_address']['zipcode'],
+            'address_type' => 'personal',
+        ]);
+
+        // Ajouter l’adresse de chenil si fournie
+        if (!empty($data['kennel_address']['city']) &&
+            !empty($data['kennel_address']['street']) &&
+            !empty($data['kennel_address']['zipcode'])) {
+
+            $petSitter->adresses()->create([
+                'city' => $data['kennel_address']['city'],
+                'street' => $data['kennel_address']['street'],
+                'zipcode' => $data['kennel_address']['zipcode'],
+                'address_type' => 'kennel',
+            ]);
+        }
+
+        // Réponse
+        return response()->json([
+            'success' => true,
+            'message' => 'PetSitter ajouté avec succès',
+            'petSitter' => new PetSitterResource($petSitter)
+        ]);
+    }
 
         protected function createTokenForUser($user){
             $token = $user->createToken('auth_token')->plainTextToken;

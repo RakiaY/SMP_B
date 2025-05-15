@@ -51,6 +51,7 @@ public function updateStatusAdmin(Request $request, $admin_id) {
         ]);
     }
 public function updateAdmin($admin_id, Request $request){
+    
     $admin = User::role('admin')->findOrFail($admin_id);
 
     $validator = Validator::make($request->all(), [
@@ -63,8 +64,7 @@ public function updateAdmin($admin_id, Request $request){
             Rule::unique('users')->ignore($admin->id)
         ],
         'phone' => 'sometimes|string|max:20',
-        'birth_date' => 'sometimes|date',
-        'gender'=> ['sometimes', Rule::enum(Gender::class)],
+        
         'password' => 'nullable|sometimes|min:8|confirmed',
     ], [
         'email.unique' => 'Cet email est déjà utilisé par un autre utilisateur.',
@@ -216,7 +216,7 @@ public function getAdminByStatut($status)
         'admin'=> new AdminResource($admin),
         'created_at' => $admin->created_at->format('d/m/Y H:i:s'),
         'updated_at' => $admin->updated_at->format('d/m/Y H:i:s'),
-'deleted_at' => $admin->deleted_at ? $admin->deleted_at->format('d/m/Y H:i:s') : null    ]);
+        'deleted_at' => $admin->deleted_at ? $admin->deleted_at->format('d/m/Y H:i:s') : null    ]);
     }
   
 

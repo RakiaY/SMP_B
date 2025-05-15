@@ -76,12 +76,24 @@ class User extends Authenticatable
     {
         return $this->hasMany(Pet::class, 'pet_owner_id');
     }
-    public function adresses()
+    public function personalAddress()
 {
-    return $this->hasMany(Address::class);
+    return $this->hasOne(Address::class)->where('address_type', 'personal');
 }
 
-    
+public function kennelAddress()
+{
+    return $this->hasOne(Address::class)->where('address_type', 'kennel');
+}
+
+
+// app/Models/User.php
+
+public function postulation()
+{
+    return $this->hasOne(Postulation::class, 'sitter_id'); // 'sitter_id' est la clé étrangère dans la table `postulations`
+}
+
     function isAdmin()
     {
         return $this->hasRole('Admin');

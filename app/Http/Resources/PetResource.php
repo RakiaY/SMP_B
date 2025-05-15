@@ -21,6 +21,8 @@ class PetResource extends JsonResource
             
             'id'         => $this->id,
             'pet_owner_id' => $this->pet_owner_id,
+            'owner_first_name' => $this->user->first_name ?? null,
+            'owner_last_name'  => $this->user->last_name ?? null,
             'name'       => $this->name,
             'type'    => $this->type,
             'breed'        => $this->breed,

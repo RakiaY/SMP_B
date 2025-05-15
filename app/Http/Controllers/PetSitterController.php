@@ -21,7 +21,9 @@ class PetSitterController extends Controller
 {
 
     public function getPetSitters() {
-        $petSitters = User::role('petsitter')->where('status', '!=', 'Deleted')->get();
+        $petSitters = User::role('petsitter')->where('status', '!=', 'Deleted') ->with(['personalAddress', 'kennelAddress'])
+    ->get();
+        
         return response()->json([
             'success' => true,
             'petSitters' => PetSitterResource::collection($petSitters)
@@ -43,7 +45,7 @@ class PetSitterController extends Controller
       // Gérer le fichier
       if ($request->hasFile('ACACED')) {
         $file = $request->file('ACACED');
-        $path = $file->store('ACACED', 'public'); // stocke dans storage/app/public/justificatifs
+        $path = $file->store('ACACED', 'public'); // stocke dans storage/app/public/ACACED
         $data['ACACED'] = $path;
     }
 
@@ -118,14 +120,11 @@ class PetSitterController extends Controller
                 Rule::unique('users', 'email')->ignore($id),
             ],
             'phone' => 'sometimes|string|max:15',
-            'status' => [
-                'sometimes',
-                Rule::enum(UserStatut::class),
-            ],
-            'experience' => 'sometimes|string|max:255',
-            'personalQualities' => 'sometimes|string|max:255',
-            'skills' => 'sometimes|string|max:255',
-            'profilePictureURL' => 'sometimes|url|max:255',
+            
+            'experience' => 'nullable|string|max:255',
+            'personalQualities' => 'nullable|string|max:255',
+            'skills' => 'nullable|string|max:255',
+            'profilePictureURL' => 'nullable|url|max:255',
         ]);
     
         if ($validator->fails()) {
