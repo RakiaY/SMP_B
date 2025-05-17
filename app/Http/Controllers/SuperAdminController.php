@@ -178,7 +178,9 @@ public function getAdminByEmailOrPhone($email_or_phone)
         $admins = User::role('admin')
             ->where(function ($query) use ($email_or_phone) {
                 $query->where('email', 'LIKE', "%{$email_or_phone}%")
-                      ->orWhere('phone', 'LIKE', "%{$email_or_phone}%");
+                      ->orWhere('phone', 'LIKE', "%{$email_or_phone}%")
+                       ->orWhere('first_name', 'LIKE', "%{$email_or_phone}%")
+                        ->orWhere('last_name', 'LIKE', "%{$email_or_phone}%");
             })
             ->get();
     

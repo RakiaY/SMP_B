@@ -26,7 +26,7 @@ class addAdressRequest extends FormRequest
     {
         return [
         'addresses' => 'required|array|size:2',
-        'addresses.*.address_type' => ['required', Rule::enum(AddressType::class)],
+        'addresses.*.address_type' => 'required |in: en_chenil , chez_proprietaire',
         'addresses.*.city' => 'required|string|max:100',
         'addresses.*.street' => 'required|string|max:255',
         'addresses.*.zipcode' => 'required|string|max:20',

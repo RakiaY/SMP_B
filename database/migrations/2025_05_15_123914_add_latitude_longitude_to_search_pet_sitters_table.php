@@ -11,11 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-             Schema::table('search_pet_sitters', function (Blueprint $table) {
-        $table->decimal('latitude', 10, 8)->change();
-        $table->decimal('longitude', 11, 8)->change();
-    
-        });
+        Schema::table('search_pet_sitters', function (Blueprint $table) {
+        $table->decimal('latitude', 10, 8)->after('adresse');
+        $table->decimal('longitude', 11, 8)->after('latitude');
+    });
     }
 
     /**
@@ -24,9 +23,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('search_pet_sitters', function (Blueprint $table) {
-        $table->decimal('latitude', 8, 2)->change();
-        $table->decimal('longitude', 8, 2)->change();
-    });
-        
+            //
+        });
     }
 };

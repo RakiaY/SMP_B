@@ -16,7 +16,7 @@ class SearchSitterController extends Controller
     $data = $request->validate([
         'user_id' => 'required|exists:users,id',
         'pet_id' => 'required|exists:pets,id',
-        'adresse' => 'required|string|max:255',
+        'adresse' => 'nullable|string|max:255',
         'latitude' => 'required|numeric',
         'longitude' => 'required|numeric',
         'description' => 'nullable|string|max:1000',

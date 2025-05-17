@@ -19,66 +19,74 @@ use App\Http\Requests\addAdressRequest;
 
 
 class AuthController extends Controller
-{
-    public function Userlogin(LoginRequest $request)
     {
-        $data = $request->validated();
+   
 
-        $user = User::where('email', $data['email'])->first();
-
-        if (!$user || !Hash::check($data['password'], $user->password)) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Identifiants incorrects.',
-            ], 401);
-        }
-
-        if (!$user->hasRole('petowner') && !$user->hasRole('petsitter')) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Refused access. ',
-            ], 403);
-        }
-
-        $token = $user->createToken('token')->plainTextToken;
-
-        return response()->json([
-            'success' => true,
-
-            'user_information' => new LoginResource($user),
-            'token' => $token,
-
-            'message' => 'User logged in successfully'
-        ]);
-    }
-
-    public function Adminlogin(LoginRequest $request){
-
-        $data=$request->validated();
-
-        // Rechercher l'utilisateur par email
-        $user = User::where('email', $request->email)->first();
     
-        // Vérifier le mot de passe
-        if (!$user || !Hash::check($request->password, $user->password)) {
-            return response()->json([
-                'success' => false,
-                'message' => ' Invalid credentials'
-            ], 401);
-        }
-        // Générer un token 
-        $token = $user->createToken('token')->plainTextToken;
+   
+public function Adminlogin(LoginRequest $request)
+{
+    $data = $request->validated();
 
-        // Retourner le token dans la réponse
+    $user = User::where('email', $data['email'])->first();
+
+    if (!$user || !Hash::check($data['password'], $user->password)) {
         return response()->json([
-            'success' => true,
-            'user_information' => new LoginResource($user),
-            'token' => $token,
-            'message' => 'User logged in successfully'
-        ]);
+            'success' => false,
+            'message' => 'Identifiants incorrects.',
+        ], 401);
     }
-    // Enregistrement d'un pet-owner
-    public function registerPetOwner(addPetOwnerRequest $request) {
+
+    // Vérifier si c’est un admin ou superadmin
+    if (!$user->hasRole('admin') && !$user->hasRole('super_admin')) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Refused access. Only admins or superadmins can log in.',
+        ], 403);
+    }
+
+    $token = $user->createToken('token')->plainTextToken;
+
+    return response()->json([
+         'success' => true,
+        'user_information' => new LoginResource($user),
+        'token' => $token,
+        'message' => 'Admin logged in successfully'
+    ]);
+}
+public function Userlogin(LoginRequest $request)
+{
+    $data = $request->validated();
+
+    $user = User::where('email', $data['email'])->first();
+
+    if (!$user || !Hash::check($data['password'], $user->password)) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Identifiants incorrects.',
+        ], 401);
+    }
+
+    if (!$user->hasRole('petowner') && !$user->hasRole('petsitter')) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Refused access. ',
+        ], 403);
+    }
+
+    $token = $user->createToken('token')->plainTextToken;
+
+    return response()->json([
+        'success' => true,
+
+        'user_information' => new LoginResource($user),
+        'token' => $token,
+
+        'message' => 'User logged in successfully'
+    ]);
+}
+
+public function registerPetOwner(addPetOwnerRequest $request) {
         $data = $request->validated();
         //status actif automatiquement des la creation
         $data['status'] = UserStatut::Active->value;
@@ -93,10 +101,10 @@ class AuthController extends Controller
             'message' => 'PetOwner ajouté avec succès',
             'petowner' => new PetOwnerResource($petowner)
         ]);
-    }
+}
 
     // Enregistrement d'un pet-sitter
-    public function registerPetSitter(addPetSitterRequest $request){
+public function registerPetSitter(addPetSitterRequest $request){
         $data = $request->validated();
         // Gérer le fichier
         if ($request->hasFile('ACACED')) {
@@ -141,14 +149,14 @@ class AuthController extends Controller
             'message' => 'PetSitter ajouté avec succès',
             'petSitter' => new PetSitterResource($petSitter)
         ]);
-    }
+}
 
-        protected function createTokenForUser($user){
+    protected function createTokenForUser($user){
             $token = $user->createToken('auth_token')->plainTextToken;
                 return $token;
-        }
+}
 
-    public function logout(Request $request){
+public function logout(Request $request){
             //$request->user()->currentAccessToken()->delete();
                 // pour se deconnecter de tous les appareils
                 $request->user()->tokens()->delete(); 
@@ -157,7 +165,7 @@ class AuthController extends Controller
                     'success' => true,
                     'message' => 'User logged out successfully'
                 ]);
-            }
+}
 
 
 }

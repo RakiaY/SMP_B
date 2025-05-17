@@ -13,11 +13,12 @@ return new class extends Migration
     {
         Schema::create('search_pet_sitters' , function (Blueprint $table){
             $table->id();
+            //owner_id
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade'); //ownerid
             $table->foreignId('pet_id')->constrained('pets')->onDelete('cascade');
             $table->string('adresse');
-            $table->decimal('latitude'); 
-            $table->decimal('longitude');
+            $table->decimal('latitude', 10, 8)->change();
+        $table->decimal('longitude', 11, 8)->change();
             $table->text('description');
             $table->string('care_type'); // 'chez_proprietaire' or 'en_chenil'
             $table->string('care_duration');

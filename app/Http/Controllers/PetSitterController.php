@@ -8,11 +8,11 @@ use App\Models\Address;
 use App\Enums\Gender;
 use App\Enums\UserStatut;
 use App\Http\Resources\PetSitterResource;
+use App\Http\Requests\addPetSitterRequest;
 
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Log;
-use App\Http\Requests\addPetSitterRequest;
 use App\Http\Requests\addAdressRequest;
 
 
@@ -50,7 +50,7 @@ class PetSitterController extends Controller
     }
 
     // Définir le statut actif
-    $data['status'] = UserStatut::Active->value;
+    $data['status'] = UserStatut::Pending->value;
 
     // Créer le pet-sitter
     $petSitter = User::create($data);
@@ -59,7 +59,7 @@ class PetSitterController extends Controller
     $petSitter->assignRole('petsitter');
 
     // Ajouter l’adresse personnelle
-    $petSitter->adresses()->create([
+    $petSitter->personalAddress()->create([
         'city' => $data['personal_address']['city'],
         'street' => $data['personal_address']['street'],
         'zipcode' => $data['personal_address']['zipcode'],
@@ -71,7 +71,7 @@ class PetSitterController extends Controller
         !empty($data['kennel_address']['street']) &&
         !empty($data['kennel_address']['zipcode'])) {
 
-        $petSitter->adresses()->create([
+        $petSitter->kennelAddress()->create([
             'city' => $data['kennel_address']['city'],
             'street' => $data['kennel_address']['street'],
             'zipcode' => $data['kennel_address']['zipcode'],
@@ -221,8 +221,7 @@ class PetSitterController extends Controller
             }
 
         return response()->json([
-            'success' => true,
-            'petSitter' => PetSitterResource::collection($petSitters)
+            'petSitters' => PetSitterResource::collection($petSitters)
         ]);
     }
 public function getSitterByStatut($status) {

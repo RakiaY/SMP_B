@@ -28,6 +28,8 @@ class PetSitterResource extends JsonResource
             'personalQualities' => $this->personalQualities,
             'skills' => $this->skills,
             'profilePictureURL' => $this->profilePictureURL,
+            'ACACED' => $this->ACACED ? asset('storage/' . $this->ACACED) : null,
+
 
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,

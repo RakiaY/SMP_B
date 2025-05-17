@@ -5,10 +5,18 @@ use App\Http\Controllers\AuthController;
 
 
 
-// Routes publiques (login, inscription)
-Route::post('/login', [AuthController::class, 'Userlogin'])->name('login');
-Route::post('/registerpetowner', [\App\Http\Controllers\AuthController::class, 'registerPetOwner']);
-Route::post('/registerpetsitter', [\App\Http\Controllers\AuthController::class, 'registerPetSitter']);
+
+Route::get('/test', function() {
+    return response()->json(['status' => 'api ymchi cv']);
+});
+
+Route::post('backoffice/login', action: [AuthController::class, 'Adminlogin']);
+Route::post('mobile/login', action: [AuthController::class, 'Userlogin']);
+
+Route::post('/registerpetowner', [AuthController::class, 'registerPetOwner']);
+Route::post('/registerpetsitter', [AuthController::class, 'registerPetSitter']);
+
+
 
 // Routes protégées communes (update profiles, etc)
 Route::middleware(['auth:sanctum'])->group(function () {

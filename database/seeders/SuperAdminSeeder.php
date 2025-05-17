@@ -2,19 +2,19 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use Spatie\Permission\Models\Role; 
+use App\Models\User;
 
-class DatabaseSeeder extends Seeder
+
+class SuperAdminSeeder extends Seeder
 {
     /**
-     * Seed the application's database.
+     * Run the database seeds.
      */
     public function run(): void
     {
-        $superAdmin = User::create([
+         $superAdmin = User::create([
             'first_name' => 'super',
             'last_name' => 'admin',
             'email' => 'superadmin@gmail.com',
@@ -24,18 +24,5 @@ class DatabaseSeeder extends Seeder
 
         // 3. Attribuer le rôle (version sécurisée)
             $superAdmin->assignRole('super_admin');
-            $this->call([
-                 RoleSeeder::class, 
-                    AdminSeeder::class,
-                    SitterSeeder::class,
-                    OwnerSeeder::class,
-
-                ]);
-       
-       
-        
-
-        
     }
-
 }

@@ -48,10 +48,9 @@ Route::middleware(['auth:sanctum','role:super_admin|admin'])->group(function () 
     Route::get('/petsitters/getByEmailPhoneOrName/{emailphonename}', [PetSitterController::class, 'getByEmailPhoneOrName']);
     Route::get('/petsitters/getByStatut/{status}', [PetSitterController::class, 'getSitterByStatut']);
     Route::post('/petsitters/addAdress/{id}', [PetSitterController::class, 'addAdress']);
-});
+
 
 // Gestion des recherches & postulations (backoffice)
-Route::middleware(['auth:sanctum','role:super_admin|admin'])->group(function () {
     Route::post('/SearchSitter/add', [SearchSitterController::class, 'addSerach']);
     Route::get('/SearchSitter', [SearchSitterController::class, 'getSearchs']);
     Route::put('/SearchSitter/update/{id}', [SearchSitterController::class, 'updateSearch']);
