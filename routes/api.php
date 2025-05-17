@@ -1,96 +1,26 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\SuperAdminController;
-use App\Http\Middleware\SuperAdminMiddleware;
-use App\Http\Controllers\PetOwnerController;
-use App\Http\Controllers\PetSitterController;
-use App\Http\Controllers\PetController;
-use App\Http\Controllers\SearchSitterController;
-use App\Http\Controllers\PostulationController;
 
 
 
-Route::get('/test', function() {
-    return response()->json(['status' => 'api ymchi cv']);
-});
+// Routes publiques (login, inscription)
+Route::post('/login', [AuthController::class, 'Userlogin'])->name('login');
+Route::post('/registerpetowner', [\App\Http\Controllers\AuthController::class, 'registerPetOwner']);
+Route::post('/registerpetsitter', [\App\Http\Controllers\AuthController::class, 'registerPetSitter']);
 
-Route::post('/login', [AuthController::class, 'login']);
-Route::post('/registerpetowner', [AuthController::class, 'registerPetOwner']);
-Route::post('/registerpetsitter', [AuthController::class, 'registerPetSitter']);
-
-
-
+// Routes protégées communes (update profiles, etc)
 Route::middleware(['auth:sanctum'])->group(function () {
 
-    Route::middleware([SuperAdminMiddleware::class])->group(function () {
+    // Routes backoffice (super_admin + admin)
+    Route::middleware(['role:super_admin|admin'])
+        ->prefix('backoffice')
+        ->group(base_path('routes/backoffice.php'));
 
-        Route::get('/admins', [SuperAdminController::class, 'getAdmins']);
-        Route::get('/admins/{admin_id}', [SuperAdminController::class, 'getAdminById']);
-        Route::post('/admins/add', [SuperAdminController::class, 'addAdmin']);
-        Route::put('/admins/update/{admin_id}', [SuperAdminController::class, 'updateAdmin']);
-        Route::put('/admins/updateStatus/{admin_id}', [SuperAdminController::class, 'updateStatusAdmin']);
-        Route::delete('/admins/delete/{admin_id}', [SuperAdminController::class, 'deleteAdmin']);
-        Route::post('/admins/restore/{admin_id}', [SuperAdminController::class, 'restoreAdmin']);
-        Route::delete('/admins/forceDelete/{admin_id}', [SuperAdminController::class, 'forceDeleteAdmin']);
-        Route::get('/admins/getByEmailOrPhone/{email_or_phone}', [SuperAdminController::class, 'getAdminByEmailOrPhone']);
-        Route::get('/admins/getByStatut/{status}', [SuperAdminController::class, 'getAdminByStatut']);
-       
+    // Routes mobile (pet-owner + pet-sitter)
+    Route::middleware(['role:petowner|petsitter'])
+        ->prefix('mobile')
+        ->group(base_path('routes/mobile.php'));
 
-    });
 });
-
-
-Route::post('/petowners/add', [PetOwnerController::class, 'addPetOwner']);
-Route::get('/petowners', [PetOwnerController::class, 'getPetOwners']);
-Route::get('/petowners/{id}', [PetOwnerController::class, 'getPetOwnerById']);
-Route::put('/petowners/update/{id}', [PetOwnerController::class, 'updatePetOwner']);
-Route::put('/petowners/updateStatut/{id}', [PetOwnerController::class, 'updatePetOwnerStatut']);
-Route::delete('/petowners/delete/{id}', [PetOwnerController::class, 'deletePetOwner']);
-Route::delete('/petowners/forceDelete/{id}', [PetOwnerController::class, 'forceDeletePetOwner']);
-Route::post('/petowners/restore/{id}', [PetOwnerController::class, 'restorePetOwner']);
-Route::get('/petowners/getByEmailOrName/{email_or_name}', [PetOwnerController::class, 'getOwnerByEmailOrName']);
-Route::get('/petowners/getByStatut/{status}', [PetOwnerController::class, 'getOwnerByStatut']);
-
-
-
-
-Route::post('/petsitters/add', [PetSitterController::class, 'addPetSitter']);
-Route::get('/petsitters', [PetSitterController::class, 'getPetSitters']);
-Route::get('/petsitters/{id}', [PetSitterController::class, 'getPetSitterById']);
-Route::put('/petsitters/update/{id}', [PetSitterController::class, 'updatePetSitter']);
-Route::put('/petsitters/updateStatut/{id}', [PetSitterController::class, 'updatePetSitterStatut']);
-Route::delete('/petsitters/delete/{id}', [PetSitterController::class, 'deletePetSitter']);
-Route::delete('/petsitters/forceDelete/{id}', [PetSitterController::class, 'forceDeletePetSitter']);
-Route::post('/petsitters/restore/{id}', [PetSitterController::class, 'restorePetSitter']);
-Route::get('/petsitters/getByEmailPhoneOrName/{emailphonename}', [PetSitterController::class, 'getByEmailPhoneOrName']);
-Route::get('/petsitters/getByStatut/{status}', [PetSitterController::class, 'getSitterByStatut']);
-Route::post('/petsitters/addAdress/{id}', [PetSitterController::class, 'addAdress']);
-
-
-Route::get('/pets', action: [PetController::class, 'getPets']);
-Route::get('/pets/{id}', action: [PetController::class, 'getPetById']);
-Route::post(uri: '/pets/add', action: [PetController::class, 'addPet']);
-Route::put(uri: '/pets/update/{id}', action: [PetController::class, 'updatePet']);
-Route::get('/pets/search/{type_name_gender}', action: [PetController::class, 'searchByTypeNameGender']);
-Route::delete(uri: '/pets/delete/{id}', action: [PetController::class, 'deletePet']);
-Route::get('/pets/owner/{id}', action: [PetController::class, 'getPetsByOwner']);
-
-
-Route::post(uri: '/SearchSitter/add', action: [SearchSitterController::class, 'addSerach']);
-Route::get('/SearchSitter', action: [SearchSitterController::class, 'getSearchs']);
-Route::put(uri: '/SearchSitter/update/{id}', action: [SearchSitterController::class, 'updateSearch']);
-Route::delete(uri: '/SearchSitter/delete/{id}', action: [SearchSitterController::class, 'deleteSearch']);
-Route::get('/SearchSitter/{id}', action: [SearchSitterController::class, 'getSearchById']);
-Route::get('/SearchSitter/search/{nameOrgardeType}', action: [SearchSitterController::class, 'getByOwnerName_StartDate']);
-
-
-
-Route::post(uri: '/postulations/add', action: [PostulationController::class, 'addPostulation']);
-Route::get('/postulations', action: [PostulationController::class, 'getPostulations']);
-Route::post(uri: '/postulations/addMultiple', action: [PostulationController::class, 'addPostulation']);
-Route::put('/postulations/updateStatut/{id}', [PostulationController::class, 'updateStatut']);
-
-

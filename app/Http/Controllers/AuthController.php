@@ -20,33 +20,65 @@ use App\Http\Requests\addAdressRequest;
 
 class AuthController extends Controller
 {
+    public function Userlogin(LoginRequest $request)
+    {
+        $data = $request->validated();
 
-    public function login(LoginRequest $request){
+        $user = User::where('email', $data['email'])->first();
 
-    $data=$request->validated();
+        if (!$user || !Hash::check($data['password'], $user->password)) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Identifiants incorrects.',
+            ], 401);
+        }
 
-    // Rechercher l'utilisateur par email
-    $user = User::where('email', $request->email)->first();
-   
-    // Vérifier le mot de passe
-    if (!$user || !Hash::check($request->password, $user->password)) {
+        if (!$user->hasRole('petowner') && !$user->hasRole('petsitter')) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Refused access. ',
+            ], 403);
+        }
+
+        $token = $user->createToken('token')->plainTextToken;
+
         return response()->json([
-            'success' => false,
-            'message' => ' Invalid credentials'
-        ], 401);
-    }
-    // Générer un token 
-    $token = $user->createToken('token')->plainTextToken;
+            'success' => true,
 
-    // Retourner le token dans la réponse
-    return response()->json([
-        'success' => true,
-        'user_information' => new LoginResource($user),
-        'token' => $token,
-        'message' => 'User logged in successfully'
-    ]);
-}
-public function registerPetOwner(addPetOwnerRequest $request) {
+            'user_information' => new LoginResource($user),
+            'token' => $token,
+
+            'message' => 'User logged in successfully'
+        ]);
+    }
+
+    public function Adminlogin(LoginRequest $request){
+
+        $data=$request->validated();
+
+        // Rechercher l'utilisateur par email
+        $user = User::where('email', $request->email)->first();
+    
+        // Vérifier le mot de passe
+        if (!$user || !Hash::check($request->password, $user->password)) {
+            return response()->json([
+                'success' => false,
+                'message' => ' Invalid credentials'
+            ], 401);
+        }
+        // Générer un token 
+        $token = $user->createToken('token')->plainTextToken;
+
+        // Retourner le token dans la réponse
+        return response()->json([
+            'success' => true,
+            'user_information' => new LoginResource($user),
+            'token' => $token,
+            'message' => 'User logged in successfully'
+        ]);
+    }
+    // Enregistrement d'un pet-owner
+    public function registerPetOwner(addPetOwnerRequest $request) {
         $data = $request->validated();
         //status actif automatiquement des la creation
         $data['status'] = UserStatut::Active->value;
@@ -63,8 +95,7 @@ public function registerPetOwner(addPetOwnerRequest $request) {
         ]);
     }
 
-    
-
+    // Enregistrement d'un pet-sitter
     public function registerPetSitter(addPetSitterRequest $request){
         $data = $request->validated();
         // Gérer le fichier
