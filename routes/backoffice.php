@@ -7,6 +7,13 @@ use App\Http\Controllers\PetSitterController;
 use App\Http\Controllers\SearchSitterController;
 use App\Http\Controllers\PostulationController;
 use App\Http\Controllers\PetController;
+use App\Http\Controllers\AuthController;
+
+
+// Routes backoffice (super_admin + admin)
+Route::middleware(['auth:sanctum','role:super_admin'])->group(function () {
+    Route::post('/adminlogin', action: [AuthController::class, 'Adminlogin']);
+});
 
 // Gestion des admins (accessible uniquement au super_admin)
 Route::middleware(['auth:sanctum','role:super_admin'])->group(function () {

@@ -10,12 +10,11 @@ Route::get('/test', function() {
     return response()->json(['status' => 'api ymchi cv']);
 });
 
-Route::post('backoffice/login', action: [AuthController::class, 'Adminlogin']);
-Route::post('mobile/login', action: [AuthController::class, 'Userlogin']);
 
-Route::post('mobile/registerpetowner', [AuthController::class, 'registerPetOwner']);
-Route::post('mobile/registerpetsitter', [AuthController::class, 'registerPetSitter']);
+Route::post('/login', action: [AuthController::class, 'Userlogin']);
 
+Route::post('/registerpetowner', [AuthController::class, 'registerPetOwner']);
+Route::post('/registerpetsitter', [AuthController::class, 'registerPetSitter']);
 
 
 // Routes protégées communes (update profiles, etc)
