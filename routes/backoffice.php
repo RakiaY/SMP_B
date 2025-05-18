@@ -6,6 +6,7 @@ use App\Http\Controllers\PetOwnerController;
 use App\Http\Controllers\PetSitterController;
 use App\Http\Controllers\SearchSitterController;
 use App\Http\Controllers\PostulationController;
+use App\Http\Controllers\PetController;
 
 // Gestion des admins (accessible uniquement au super_admin)
 Route::middleware(['auth:sanctum','role:super_admin'])->group(function () {
@@ -63,5 +64,18 @@ Route::middleware(['auth:sanctum','role:super_admin|admin'])->group(function () 
     Route::post('/postulations/addMultiple', [PostulationController::class, 'addPostulation']);
     Route::put('/postulations/updateStatut/{id}', [PostulationController::class, 'updateStatut']);
     Route::get('/postulations/{id}', [PostulationController::class, 'getPostulationById']);
-    Route::delete('/postulations/delete/{id}', [PostulationController::class, 'deletePostulation']);
-});
+    Route::delete('/postulations/delete/{id}', action: [PostulationController::class, 'deletePostulation']);
+        Route::get('/postulations/filterStatut/{statut}', action: [PostulationController::class, 'getPostulationsByStatut']);
+        Route::get('/postulations/sitters/get', action: [PostulationController::class, 'getPetSittersForPostulation']);
+                Route::get('/postulations/search/{sitter}', action: [PostulationController::class, 'searchBySitter']);
+
+
+            // Gestion des animaux (mobile)
+            Route::get('/pets', [PetController::class, 'getPets']);
+            Route::get('/pets/{id}', [PetController::class, 'getPetById']);
+            Route::post('/pets/add', [PetController::class, 'addPet']);
+            Route::put('/pets/update/{id}', [PetController::class, 'updatePet']);
+            Route::delete('/pets/delete/{id}', [PetController::class, 'deletePet']);
+            Route::get('/pets/owner/{id}', [PetController::class, 'getPetsByOwner']);
+            Route::get('/pets/search/{type_name_gender}', [PetController::class, 'searchByTypeNameGender']);
+            });

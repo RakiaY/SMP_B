@@ -29,7 +29,7 @@ class addPetSitterRequest extends FormRequest
     'first_name' => 'required|string|min:2|max:50',
     'last_name' => 'required|string|min:2|max:50',
     'email' => 'required|email|unique:users,email|max:255',
-'gender' => ['required', Rule::in(Gender::values())],
+    'gender' => ['required', Rule::in(Gender::values())],
     'phone' => 'required|string|min:8|max:20',
     'birth_date' => 'required|date|date_format:Y-m-d|before:today',
     'profilePictureURL' => 'nullable|file|mimes:jpg,jpeg,png|max:2048',
@@ -41,7 +41,7 @@ class addPetSitterRequest extends FormRequest
     'experience' => 'nullable|string|max:500',
     'personalQualities' => 'nullable|string|max:500',
     'skills' => 'nullable|string|max:500',
-    'ACACED' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:2048',
+    'ACACED' => 'required|file|mimes:pdf,jpg,jpeg,png|max:2048',
 
         // Adresse personnelle (obligatoire)
         'personal_address.city' => 'required|string|max:100',

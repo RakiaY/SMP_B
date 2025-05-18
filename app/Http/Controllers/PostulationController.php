@@ -76,11 +76,11 @@ class PostulationController extends Controller
         'postulation' => new PostulationResource($postulation),
     ]);
  }
-public function searchBySitterOrOwner($ownerorsitter){
+public function searchBySitter($sitter){
         $postulations = Postulation::with('sitter')
-        ->whereHas('sitter', function ($query) use ($ownerorsitter) {
-            $query->where('first_name', 'like', "%$ownerorsitter%")
-                ->orWhere('last_name', 'like', "%$ownerorsitter%");
+        ->whereHas('sitter', function ($query) use ($sitter) {
+            $query->where('first_name', 'like', "%$sitter%")
+                ->orWhere('last_name', 'like', "%$sitter%");
 
         })->get(); 
 
@@ -90,13 +90,13 @@ public function searchBySitterOrOwner($ownerorsitter){
     }
     public function getPostulationsByStatut($statut){
 
-        $postulations=Postulation::where ('statut', $statut)->get();
-        if ($postulations->isEmpty()) {
+        $Postulations=Postulation::where ('statut', $statut)->get();
+        if ($Postulations->isEmpty()) {
             return response()->json(['message' => 'Aucunn postulation avec ce statut'], 404);
         }
     
             return response()->json([
-            'Postulations' => PostulationResource::collection($postulations),
+            'Postulations' => PostulationResource::collection($Postulations),
         ]);
     }
       public function getPetSittersForPostulation() {

@@ -107,10 +107,17 @@ public function registerPetOwner(addPetOwnerRequest $request) {
 public function registerPetSitter(addPetSitterRequest $request){
         $data = $request->validated();
         // Gérer le fichier
+        
         if ($request->hasFile('ACACED')) {
             $file = $request->file('ACACED');
             $path = $file->store('ACACED', 'public'); // stocke dans storage/app/public/justificatifs
             $data['ACACED'] = $path;
+        }
+
+        if ($request->hasFile('profilePictureURL')) {
+            $file = $request->file('profilePictureURL');
+            $path = $file->store('PhotoProfil', 'public'); // stocke dans storage/app/public/justificatifs
+            $data['profilePictureURL'] = $path;
         }
 
         // Définir le statut actif

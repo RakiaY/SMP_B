@@ -40,7 +40,7 @@ class PetSitterController extends Controller
         ]);
     }
     public function addPetSitter(addPetSitterRequest $request)
-{
+    {
     $data = $request->validated();
       // Gérer le fichier
       if ($request->hasFile('ACACED')) {
@@ -48,6 +48,11 @@ class PetSitterController extends Controller
         $path = $file->store('ACACED', 'public'); // stocke dans storage/app/public/ACACED
         $data['ACACED'] = $path;
     }
+    if ($request->hasFile('profilePictureURL')) {
+            $file = $request->file('profilePictureURL');
+            $path = $file->store('PhotoProfil', 'public'); // stocke dans storage/app/public/justificatifs
+            $data['profilePictureURL'] = $path;
+        }
 
     // Définir le statut actif
     $data['status'] = UserStatut::Pending->value;

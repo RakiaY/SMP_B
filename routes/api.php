@@ -13,8 +13,8 @@ Route::get('/test', function() {
 Route::post('backoffice/login', action: [AuthController::class, 'Adminlogin']);
 Route::post('mobile/login', action: [AuthController::class, 'Userlogin']);
 
-Route::post('/registerpetowner', [AuthController::class, 'registerPetOwner']);
-Route::post('/registerpetsitter', [AuthController::class, 'registerPetSitter']);
+Route::post('mobile/registerpetowner', [AuthController::class, 'registerPetOwner']);
+Route::post('mobile/registerpetsitter', [AuthController::class, 'registerPetSitter']);
 
 
 

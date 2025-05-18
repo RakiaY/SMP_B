@@ -17,14 +17,7 @@ use App\Http\Controllers\PostulationController;
 Route::put('/petowner/update/{id}', [PetOwnerController::class, 'updatePetOwner']);
 Route::put('/petsitter/update/{id}', [PetSitterController::class, 'updatePetSitter']);
 
-// Gestion des animaux (mobile)
-Route::get('/pets', [PetController::class, 'getPets']);
-Route::get('/pets/{id}', [PetController::class, 'getPetById']);
-Route::post('/pets/add', [PetController::class, 'addPet']);
-Route::put('/pets/update/{id}', [PetController::class, 'updatePet']);
-Route::delete('/pets/delete/{id}', [PetController::class, 'deletePet']);
-Route::get('/pets/owner/{id}', [PetController::class, 'getPetsByOwner']);
-Route::get('/pets/search/{type_name_gender}', [PetController::class, 'searchByTypeNameGender']);
+
 
 // Gestion des recherches et postulations (mobile)
 Route::post('/SearchSitter/add', [SearchSitterController::class, 'addSerach']);
