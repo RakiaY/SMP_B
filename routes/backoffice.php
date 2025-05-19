@@ -77,7 +77,7 @@ Route::middleware(['auth:sanctum','role:super_admin|admin'])->group(function () 
                 Route::get('/postulations/search/{sitter}', action: [PostulationController::class, 'searchBySitter']);
 
 
-            // Gestion des animaux (mobile)
+            // Gestion des animaux (backoffice)
             Route::get('/pets', [PetController::class, 'getPets']);
             Route::get('/pets/{id}', [PetController::class, 'getPetById']);
             Route::post('/pets/add', [PetController::class, 'addPet']);

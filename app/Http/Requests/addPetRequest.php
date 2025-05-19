@@ -27,20 +27,20 @@ class addPetRequest extends FormRequest
         return [
             // Vérifiez que l'utilisateur a le rôle "petowner"
             'pet_owner_id' => 'required|exists:users,id',
-    'name' => 'required|string|max:255',
-    'type' => 'required|string|max:255',
-    'breed' => 'required|string|max:255',
-    'birth_date' => 'required|date',
-    'weight' => 'required|numeric',
-    'gender' => 'required|string',
-    'color' => 'required|string',
-    'description' => 'nullable|string',
-    'is_vaccinated' => 'required|boolean',
-    'has_contagious_diseases' => 'required|boolean',
-    'has_medical_file' => 'required|boolean',
-    'is_critical_condition' => 'required|boolean',
-    'media.*' => 'file|mimes:jpg,jpeg,png,mp4|max:10240' // 10MB max
-        ];
+            'name' => 'nullable|string|max:255',
+            'type' => 'nullable|string|max:255',
+            'breed' => 'nullable|string|max:255',
+            'birth_date' => 'nullable|date',
+            'weight' => 'nullable|numeric',
+            'gender' => 'nullable|string',
+            'color' => 'nullable|string',
+            'description' => 'nullable|string',
+            'is_vaccinated' => 'nullable|boolean',
+            'has_contagious_diseases' => 'nullable|boolean',
+            'has_medical_file' => 'nullable|boolean',
+            'is_critical_condition' => 'nullable|boolean',
+            'media.*' => 'nullable|file|mimes:jpg,jpeg,png,mp4|max:10240' // 10MB max
+                ];
     
 }
 }
