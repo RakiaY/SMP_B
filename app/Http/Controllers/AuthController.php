@@ -121,7 +121,7 @@ public function registerPetSitter(addPetSitterRequest $request){
         }
 
         // Définir le statut actif
-        $data['status'] = UserStatut::Active->value;
+        $data['status'] = UserStatut::Pending->value;
 
         // Créer le pet-sitter
         $petSitter = User::create($data);

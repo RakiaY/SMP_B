@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+
 use App\Http\Controllers\PetController;
 
 
@@ -9,6 +10,8 @@ use App\Http\Controllers\PetController;
 Route::get('/test', function() {
     return response()->json(['status' => 'api ymchi cv']);
 });
+Route::get('/pets/ByOwner/{id}', [PetController::class, 'getPetsByOwner']);
+            Route::post('/pets/add', [PetController::class, 'addPet']);
 
 use Illuminate\Support\Facades\Auth;
 

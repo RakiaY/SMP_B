@@ -41,19 +41,12 @@ public function getPetsByOwner($id)
         ]);}
 
 
-  public function addPet(addPetRequest $request){
-    //\Log::info('Current user:', ['user' => Auth::user()]);
-    //$owner = User::role('petowner')->findOrFail($request->pet_owner_id);
 
-    // Vérification si l'utilisateur a le rôle 'petowner'
-    // On utilise Auth::user() pour obtenir l'utilisateur authentifié
-    $owner = Auth::user();
-    if (!$owner->hasRole('petowner')) {
-        return response()->json(['error' => 'Unauthorized'], 403);
-    }
+ public function addPet(addPetRequest $request)
+{
+    $owner = User::role('petowner')->findOrFail($request->pet_owner_id);
 
     $request->merge([
-        'pet_owner_id' => Auth::user()->id, // force correct ID
         'is_vaccinated' => filter_var($request->is_vaccinated, FILTER_VALIDATE_BOOLEAN),
         'has_contagious_diseases' => filter_var($request->has_contagious_diseases, FILTER_VALIDATE_BOOLEAN),
         'has_medical_file' => filter_var($request->has_medical_file, FILTER_VALIDATE_BOOLEAN),
@@ -62,22 +55,36 @@ public function getPetsByOwner($id)
 
     $data = $request->validated();
 
-    $allowedBreeds = PetBreed::getBreedsByType($data['type']);
-    if (!in_array($data['breed'], $allowedBreeds)) {
+    $allowedBreeds = PetBreed::getBreedsByType($request->type);
+    if (!in_array($request->breed, $allowedBreeds)) {
         return response()->json(['error' => 'Race invalide pour ce type'], 400);
     }
 
     $pet = Pet::create($data);
 
-    // Handle media
+    // ✅ Sauvegarde de la photo principale
+    if ($request->hasFile('photo_profil')) {
+        $photoProfilPath = $request->file('photo_profil')->store('pet_medias', 'public');
+
+        PetMedia::create([
+            'pet_id' => $pet->id,
+            'media_patth' => $photoProfilPath,
+            'media_type' => 'photo',
+            'is_thumbnail' => true,
+            'uploaded_at' => now(),
+        ]);
+    }
+
+    // ✅ Sauvegarde des autres médias
     if ($request->hasFile('media')) {
         foreach ($request->file('media') as $file) {
+            $mediaType = $file->getClientOriginalExtension() === 'mp4' ? 'video' : 'photo';
             $path = $file->store('pet_medias', 'public');
 
             PetMedia::create([
                 'pet_id' => $pet->id,
                 'media_patth' => $path,
-                'media_type' => $this->getMediaType($file->getMimeType()),
+                'media_type' => $mediaType,
                 'is_thumbnail' => false,
                 'uploaded_at' => now(),
             ]);
@@ -85,7 +92,9 @@ public function getPetsByOwner($id)
     }
 
     return response()->json(['pet' => new PetResource($pet)], 201);
+   
 }
+
 
 
 /**

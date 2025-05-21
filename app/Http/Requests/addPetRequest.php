@@ -42,5 +42,6 @@ class addPetRequest extends FormRequest
             'media.*' => 'nullable|file|mimes:jpg,jpeg,png,mp4|max:10240' // 10MB max
                 ];
     
+
 }
 }
