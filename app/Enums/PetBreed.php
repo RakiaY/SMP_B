@@ -60,7 +60,7 @@ enum PetBreed: string
     public static function getBreedsByType(string $type): array
     {
         return match ($type) {
-            PetType::Chien->value => [
+            PetType::dog->value => [
                 self::GERMAN_SHEPHERD->value,
                 self::LABRADOR->value,
                 self::BULLDOG->value,
@@ -70,7 +70,7 @@ enum PetBreed: string
                 self::HUSKY->value,
                 self::SHIH_TZU->value,
             ],
-            PetType::Chat->value => [
+            PetType::cat->value => [
                 self::PERSIAN->value,
                 self::MAINE_COON->value,
                 self::SIAMESE->value,
@@ -78,36 +78,31 @@ enum PetBreed: string
                 self::SPHYNX->value,
                 self::RAGDOLL->value,
             ],
-            PetType::Lapin->value => [
+            PetType::rabbit->value => [
                 self::HOLLAND_LOP->value,
                 self::NETHERLAND_DWARF->value,
                 self::ANGORA->value,
                 self::REX->value,
             ],
-            PetType::Oiseau->value => [
+            PetType::bird->value => [
                 self::PARAKEET->value,
                 self::CANARY->value,
                 self::COCKATIEL->value,
                 self::PARROT->value,
             ],
-            PetType::Poisson->value => [
+            PetType::fish->value => [
                 self::GOLDFISH->value,
                 self::BETTA->value,
                 self::GUPPY->value,
                 self::ANGELFISH->value,
             ],
-            PetType::Souris->value => [
+            PetType::mouse->value => [
                 self::RAT->value,
                 self::HAMSTER->value,
                 self::GUINEA_PIG->value,
                 self::MOUSE->value,
             ],
-            PetType::Tortue->value => [
-                self::HERMANN_TURTLE->value,
-                self::GREEK_TURTLE->value,
-                self::RED_EARED_SLIDER->value,
-            ],
-            PetType::Autre->value => [
+            PetType::autre->value => [
                 self::FERRET->value,
                 self::IGUANA->value,
                 self::SNAKE->value,

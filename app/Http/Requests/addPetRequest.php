@@ -35,8 +35,8 @@ class addPetRequest extends FormRequest
             'gender' => 'nullable|string',
             'color' => 'nullable|string',
             'description' => 'nullable|string',
-            'is_vaccinated' => 'nullable|boolean',
-            'has_contagious_diseases' => 'nullable|boolean',
+            'is_vaccinated' => 'nullable',
+            'has_contagious_diseases' => 'nullable',
             'has_medical_file' => 'nullable|boolean',
             'is_critical_condition' => 'nullable|boolean',
             'media.*' => 'nullable|file|mimes:jpg,jpeg,png,mp4|max:10240' // 10MB max

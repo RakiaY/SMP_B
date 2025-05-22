@@ -4,14 +4,13 @@ namespace App\Enums;
 
 enum petType: string
 {
-    case Chat = 'Chat';
-    case Chien = 'Chien';
-    case Lapin = 'Lapin';
-    case Oiseau = 'Oiseau';
-    case Poisson = 'Poisson';
-    case Souris ='Souris';
-    case Tortue = 'Tortue';
-    case Autre = 'Autre'; 
+    case cat = 'Chat';
+    case dog = 'dog';
+    case rabbit = 'Lapin';
+    case bird = 'Oiseau';
+    case fish = 'Poisson';
+    case mouse ='Souris';
+    case autre = 'Autre'; 
 
 
     
