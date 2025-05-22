@@ -56,6 +56,7 @@ class Pet extends Model
 		'gender',
 		'birth_date',
 		'color',
+		'taille',
 		'weight',
 		'description',
 		'is_vaccinated',

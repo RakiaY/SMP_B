@@ -32,14 +32,17 @@ class addPetRequest extends FormRequest
             'breed' => 'nullable|string|max:255',
             'birth_date' => 'nullable|date',
             'weight' => 'nullable|numeric',
+            'taille' => 'nullable|in:Petite,Moyenne,Grande',
             'gender' => 'nullable|string',
             'color' => 'nullable|string',
             'description' => 'nullable|string',
-            'is_vaccinated' => 'nullable',
-            'has_contagious_diseases' => 'nullable',
+            'is_vaccinated' => 'nullable|boolean',
+            'has_contagious_diseases' => 'nullable|boolean',
             'has_medical_file' => 'nullable|boolean',
             'is_critical_condition' => 'nullable|boolean',
-            'media.*' => 'nullable|file|mimes:jpg,jpeg,png,mp4|max:10240' // 10MB max
+             // photo de profil
+            'photo_profil' => 'sometimes|file|mimes:jpg,jpeg,png,svg|max:10240',
+            'media.*' => 'sometimes|file|mimes:jpg,jpeg,png,svg,mp4|max:10240'
                 ];
     
 

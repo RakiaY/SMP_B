@@ -78,7 +78,6 @@ Route::middleware(['auth:sanctum','role:super_admin|admin'])->group(function () 
             // Gestion des animaux (backoffice)
             Route::get('/pets', [PetController::class, 'getPets']);
             Route::get('/pets/{id}', [PetController::class, 'getPetById']);
-            Route::post('/pets/add', [PetController::class, 'addPet']);
             Route::put('/pets/update/{id}', [PetController::class, 'updatePet']);
             Route::delete('/pets/delete/{id}', [PetController::class, 'deletePet']);
             Route::get('/pets/owner/{id}', [PetController::class, 'getPetsByOwner']);

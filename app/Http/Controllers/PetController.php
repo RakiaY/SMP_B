@@ -14,6 +14,8 @@ use App\Models\Pet;
 use App\Models\petMedia;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Database\QueryException;
+use Illuminate\Support\Facades\Log;
 
 
 class PetController extends Controller
@@ -43,7 +45,9 @@ public function getPetsByOwner($id)
 
 
  public function addPet(addPetRequest $request)
-{
+    {
+    Log::info('Requête reçue', $request->all());
+
     $owner = User::role('petowner')->findOrFail($request->pet_owner_id);
 
     $request->merge([
@@ -54,14 +58,19 @@ public function getPetsByOwner($id)
     ]);
 
     $data = $request->validated();
+    Log::info('Données validées', $data);
 
     $allowedBreeds = PetBreed::getBreedsByType($request->type);
     if (!in_array($request->breed, $allowedBreeds)) {
         return response()->json(['error' => 'Race invalide pour ce type'], 400);
     }
 
-    $pet = Pet::create($data);
-
+        try {
+            $pet = Pet::create($data);
+        } catch (QueryException $e) {
+            Log::error('Erreur création pet: ' . $e->getMessage());
+            return response()->json(['error' => 'Erreur base de données'], 500);
+        }
     // ✅ Sauvegarde de la photo principale
     if ($request->hasFile('photo_profil')) {
         $photoProfilPath = $request->file('photo_profil')->store('pet_medias', 'public');
@@ -92,7 +101,6 @@ public function getPetsByOwner($id)
     }
 
     return response()->json(['pet' => new PetResource($pet)], 201);
-   
 }
 
 

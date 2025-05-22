@@ -38,6 +38,5 @@ Route::get('/postulations/{id}', [PostulationController::class, 'getPostulationB
 // Gestion des animaux (mobile)
             Route::get('/pets', [PetController::class, 'getPets']);
             Route::get('/pets/{id}', [PetController::class, 'getPetById']);
-            Route::post('/pets/add', [PetController::class, 'addPet']);
             Route::put('/pets/update/{id}', [PetController::class, 'updatePet']);
             Route::delete('/pets/delete/{id}', [PetController::class, 'deletePet']);

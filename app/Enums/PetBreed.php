@@ -40,27 +40,29 @@ enum PetBreed: string
     case GUPPY = 'Guppy';
     case ANGELFISH = 'Scalaire';
 
-    // Rongeurs (Souris)
-    case RAT = 'Rat';
-    case HAMSTER = 'Hamster';
-    case GUINEA_PIG = 'Cochon d\'Inde';
-    case MOUSE = 'Souris';
+    // Souris
+    //case RAT = 'Rat';
+    //case HAMSTER = 'Hamster';
+    //case GUINEA_PIG = 'Cochon d\'Inde';
+    //case MOUSE = 'Souris';
 
     // Tortues
-    case HERMANN_TURTLE = 'Tortue d’Hermann';
-    case GREEK_TURTLE = 'Tortue grecque';
-    case RED_EARED_SLIDER = 'Tortue à oreilles rouges';
+    //case HERMANN_TURTLE = 'Tortue d’Hermann';
+    //case GREEK_TURTLE = 'Tortue grecque';
+    //case RED_EARED_SLIDER = 'Tortue à oreilles rouges';
 
     // Autres
     case FERRET = 'Furet';
     case IGUANA = 'Iguane';
     case SNAKE = 'Serpent';
     case HEDGEHOG = 'Hérisson';
+    case SOURIS = 'Souris';
+    case TORTUE = 'Tortue';
 
     public static function getBreedsByType(string $type): array
     {
         return match ($type) {
-            PetType::dog->value => [
+            PetType::Chien->value => [
                 self::GERMAN_SHEPHERD->value,
                 self::LABRADOR->value,
                 self::BULLDOG->value,
@@ -70,7 +72,7 @@ enum PetBreed: string
                 self::HUSKY->value,
                 self::SHIH_TZU->value,
             ],
-            PetType::cat->value => [
+            PetType::Chat->value => [
                 self::PERSIAN->value,
                 self::MAINE_COON->value,
                 self::SIAMESE->value,
@@ -78,35 +80,71 @@ enum PetBreed: string
                 self::SPHYNX->value,
                 self::RAGDOLL->value,
             ],
-            PetType::rabbit->value => [
+            PetType::Lapin->value => [
                 self::HOLLAND_LOP->value,
                 self::NETHERLAND_DWARF->value,
                 self::ANGORA->value,
                 self::REX->value,
             ],
-            PetType::bird->value => [
+            PetType::Oiseau->value => [
                 self::PARAKEET->value,
                 self::CANARY->value,
                 self::COCKATIEL->value,
                 self::PARROT->value,
             ],
-            PetType::fish->value => [
+            PetType::Poisson->value => [
                 self::GOLDFISH->value,
                 self::BETTA->value,
                 self::GUPPY->value,
                 self::ANGELFISH->value,
             ],
-            PetType::mouse->value => [
-                self::RAT->value,
-                self::HAMSTER->value,
-                self::GUINEA_PIG->value,
-                self::MOUSE->value,
-            ],
-            PetType::autre->value => [
-                self::FERRET->value,
-                self::IGUANA->value,
-                self::SNAKE->value,
-                self::HEDGEHOG->value,
+            
+             PetType::Autre->value => [
+                // Cobaye
+                'Abyssin',
+                self::ANGORA->value,
+                'Péruvien',
+                'Texel',
+                self::REX->value,
+
+                // Furet
+                'Albinos',
+                'Zibeline',
+                'Champagne',
+                self::ANGORA->value,
+
+                // Perroquet
+                'Gris du Gabon',
+                'Ara bleu',
+                'Perruche ondulée',
+                'Pionus',
+                'Caique',
+
+                // Tortue
+                'de Hermann',
+                'étoilée',
+                'sulcata',
+                'boîte d’eau',
+
+                // Serpent
+                'Python royal',
+                'Couleuvre cornue',
+                'Boa constrictor',
+                'Couleuvre de Rat',
+                'Couleuvre royale',
+
+                // Chinchilla
+                'Standard',
+                'White mosaic',
+                'Ebony',
+                'Sapphire',
+                'Violet',
+
+                // Souris
+                'Fancy mouse',
+                'Black mouse',
+                'Golden mouse',
+                'Dalmatian mouse',
             ],
             default => [],
         };
