@@ -62,7 +62,7 @@ class Pet extends Model
 		'is_vaccinated',
 		'has_contagious_diseases',
 		'has_medical_file',
-		'is_critical_condition'
+		'is_critical_condition',
 	];
 
 	public function user()
@@ -74,4 +74,6 @@ class Pet extends Model
 	{
 		return $this->hasMany(PetMedia::class);
 	}
+
+
 }
