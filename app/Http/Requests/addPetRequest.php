@@ -41,7 +41,7 @@ class addPetRequest extends FormRequest
             'has_medical_file' => 'nullable|boolean',
             'is_critical_condition' => 'nullable|boolean',
              // photo de profil
-            'photo_profil' => 'sometimes|file|mimes:jpg,jpeg,png,svg|max:10240',
+            'photo_profil' => 'nullable|file|mimes:jpg,jpeg,png,svg|max:10240',
             'media.*' => 'sometimes|file|mimes:jpg,jpeg,png,svg,mp4|max:10240'
                 ];
     

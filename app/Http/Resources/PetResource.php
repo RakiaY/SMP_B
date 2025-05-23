@@ -4,7 +4,8 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
-use Psy\Exception\BreakException;
+use Psy\Exception\BreakException;use App\Models\petMedia;
+
 
 use function Symfony\Component\String\b;
 
@@ -17,6 +18,10 @@ class PetResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        // récupérer la photo de profil directement par query
+    $thumbnail =PetMedia::where('pet_id', $this->id)
+                ->where('is_thumbnail', true)
+                ->first();
         return [
             
             'id'         => $this->id,
@@ -35,6 +40,9 @@ class PetResource extends JsonResource
             'has_contagious_diseases'        => $this->has_contagious_diseases,
             'has_medical_file'        => $this->has_medical_file,
             'is_critical_condition'        => $this->is_critical_condition,
+                
+            'photo_profil' => $this->PetMedia->where('is_thumbnail', true)->first() ? $this->PetMedia->where('is_thumbnail', true)->first()->media_patth : null,
+
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
              // 👇 Ajout des médias
