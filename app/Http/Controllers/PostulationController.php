@@ -108,6 +108,17 @@ public function searchBySitter($sitter){
         ]);
     }
 
+    public function getPostulationsBySitterId($sitterId)
+    {
+        $postulations = Postulation::with(['sitter','search.user'])
+            ->where('sitter_id', $sitterId)
+            ->get();
+
+        return response()->json([
+            'Postulations' => PostulationResource::collection($postulations),
+        ]);
+    }
+
 
 }
 

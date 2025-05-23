@@ -32,8 +32,9 @@ Route::get('/pets/search/{type_name_gender}', [PetController::class, 'searchByTy
 Route::post('/postulations/add', [PostulationController::class, 'addPostulation']);
 Route::get('/postulations', [PostulationController::class, 'getPostulations']);
 Route::post('/postulations/addMultiple', [PostulationController::class, 'addPostulation']);
-Route::put('/postulations/updateStatut/{id}', [PostulationController::class, 'updateStatut']);
+Route::put('/postulations/updateStatut/{id}', [PostulationController::class, 'updatePostulationStatut']);
 Route::get('/postulations/{id}', [PostulationController::class, 'getPostulationById']);
+Route::get('postulations/sitter/{sitterId}', [PostulationController::class, 'getPostulationsBySitterId']);
 
 // Gestion des animaux (mobile)
             Route::get('/pets', [PetController::class, 'getPets']);
