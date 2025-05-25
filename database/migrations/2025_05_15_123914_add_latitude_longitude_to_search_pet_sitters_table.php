@@ -10,12 +10,13 @@ return new class extends Migration
      * Run the migrations.
      */
     public function up(): void
-    {
-        Schema::table('search_pet_sitters', function (Blueprint $table) {
-        $table->decimal('latitude', 10, 8)->after('adresse');
-        $table->decimal('longitude', 11, 8)->after('latitude');
+{
+    Schema::table('search_pet_sitters', function (Blueprint $table) {
+        // NOTE : on ne recrée pas la colonne, on la modifie :
+        $table->decimal('latitude', 10, 8)->change();
+        $table->decimal('longitude', 11, 8)->change();
     });
-    }
+}
 
     /**
      * Reverse the migrations.

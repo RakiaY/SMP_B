@@ -4,7 +4,6 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
-use Psy\Exception\BreakException;use App\Models\petMedia;
 
 
 use function Symfony\Component\String\b;
@@ -19,9 +18,7 @@ class PetResource extends JsonResource
     public function toArray(Request $request): array
     {
         // récupérer la photo de profil directement par query
-    $thumbnail =PetMedia::where('pet_id', $this->id)
-                ->where('is_thumbnail', true)
-                ->first();
+    
         return [
             
             'id'         => $this->id,

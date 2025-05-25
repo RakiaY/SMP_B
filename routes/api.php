@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PetController;
+use App\Http\Controllers\SearchSitterController;
 
 
 
@@ -15,6 +16,7 @@ Route::post('/registerpetsitter', [AuthController::class, 'registerPetSitter']);
 
 Route::get('/pets/ByOwner/{id}', [PetController::class, 'getPetsByOwner']);
 Route::post('/pets/add', [PetController::class, 'addPet']);
+Route::post('/SearchSitter/add', [SearchSitterController::class, 'addSearch']);
 
 
 // Routes protégées communes (update profiles, etc)

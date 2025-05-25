@@ -15,7 +15,6 @@ Route::put('/petsitter/update/{id}', [PetSitterController::class, 'updatePetSitt
 
 
 // Gestion des recherches et postulations (mobile)
-Route::post('/SearchSitter/add', [SearchSitterController::class, 'addSerach']);
 Route::get('/SearchSitter', [SearchSitterController::class, 'getSearchs']);
 Route::put('/SearchSitter/update/{id}', [SearchSitterController::class, 'updateSearch']);
 Route::delete('/SearchSitter/delete/{id}', [SearchSitterController::class, 'deleteSearch']);

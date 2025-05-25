@@ -15,12 +15,12 @@ class SearchSitter extends Model
         'longitude',
         'description',
         'care_type', // 'chez_proprietaire' or 'en_chenil'
-        'care_duration',
         'start_date',
         'end_date',
         'expected_services', //( marche;nourrissag; toilettage)
         'remunerationMin',
         'remunerationMax',
+        'passages_per_day'
     ];
     protected $casts = [
         'start_date' => 'date',
@@ -34,6 +34,14 @@ class SearchSitter extends Model
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id');
+    }
+    public function slots()
+    {
+        return $this->hasMany(
+            SearchSitterSlot::class,
+            'search_pet_sitter_id',  // clé étrangère dans la table slots
+            'id'                     // clé locale dans search_sitters
+        );
     }
 
 }

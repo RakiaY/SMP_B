@@ -39,7 +39,7 @@ public function getPetsByOwner($id)
     $owner = User::role('petowner')->findOrFail($id);
 
     // Charge les animaux avec les relations "user" et "thumbnail"
-    $pets = Pet::with(['user', 'thumbnail'])->where('pet_owner_id', $id)->get();
+    $pets = Pet::with(['user'])->where('pet_owner_id', $id)->get();
 
     return response()->json([
         'Pets' => PetResource::collection($pets),

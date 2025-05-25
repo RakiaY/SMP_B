@@ -28,12 +28,22 @@ class SearchResource extends JsonResource
                 'longitude' => $this->longitude,
                 'description' => $this->description,
                 'care_type' => $this->care_type, 
-                'care_duration' => $this->care_duration,
                 'start_date' => $this->start_date,
                 'end_date' => $this->end_date,
                 'expected_services' => $this->expected_services, //( marche;nourrissag; toilettage)
                 'remunerationMin' => $this->remunerationMin,
                 'remunerationMax' => $this->remunerationMax,
+                // Champs spécifiques pour "chez_proprietaire"
+            $this->mergeWhen($this->care_type === 'chez_proprietaire', [
+                'passages_per_day' => $this->passages_per_day,
+                'slots' => $this->slots->map(function ($slot) {
+                    return [
+                        'slot_order' => $slot->slot_order,
+                        'start_time' => $slot->start_time,
+                        'end_time' => $slot->end_time,
+                    ];
+                })->values(),
+            ]),
         ];
     }
 }
