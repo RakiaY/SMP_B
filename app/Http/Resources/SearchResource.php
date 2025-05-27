@@ -20,13 +20,15 @@ class SearchResource extends JsonResource
             'pet_id' => $this->pet_id,
             'user_name' => $this->user->first_name . ' ' . $this->user->last_name,
             'pet_name' => $this->pet->name,
-                        'pet_type' => $this->pet->type,
+            'pet_type' => $this->pet->type,
+            'photo_profil' => $this->PetMedia->where('is_thumbnail', true)->first() ? $this->PetMedia->where('is_thumbnail', true)->first()->media_patth : null,
+
+                        
 
 
                 'adresse' => $this->adresse,
                 'latitude' => $this->latitude,
                 'longitude' => $this->longitude,
-                'description' => $this->description,
                 'care_type' => $this->care_type, 
                 'start_date' => $this->start_date,
                 'end_date' => $this->end_date,

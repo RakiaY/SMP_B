@@ -68,7 +68,7 @@ public function addSearch(Request $request)
     }
 
     // 4️⃣ Charger les relations pour la réponse
-    $searchSitter->load(['user', 'pet', 'slots']);
+    $searchSitter->load(['user', 'pet', 'slots','PetMedia']);
 
     return response()->json([
         'searchSitter' => new SearchResource($searchSitter),
@@ -77,7 +77,7 @@ public function addSearch(Request $request)
 
 
    public function getSearchs(){
-    $searchs = SearchSitter::with(['user', 'pet'])->get();
+    $searchs = SearchSitter::with(['user', 'pet','PetMedia'])->get();
     return response()->json([
         'Searchs' => SearchResource::collection($searchs),
     ]);
@@ -92,7 +92,6 @@ public function addSearch(Request $request)
             'adresse' => 'sometimes|string|max:255',
             'latitude' => 'sometimes|numeric',
             'longitude' => 'sometimes|numeric',
-            'description' => 'nullable|string|max:1000',
             'care_type' => 'sometimes|string|in:chez_proprietaire,en_chenil',
             'care_duration' => 'sometimes|string|max:255',
             'start_date' => 'sometimes|date',

@@ -13,7 +13,6 @@ class SearchSitter extends Model
         'adresse',
         'latitude',
         'longitude',
-        'description',
         'care_type', // 'chez_proprietaire' or 'en_chenil'
         'start_date',
         'end_date',
@@ -41,6 +40,17 @@ class SearchSitter extends Model
             SearchSitterSlot::class,
             'search_pet_sitter_id',  // clé étrangère dans la table slots
             'id'                     // clé locale dans search_sitters
+        );
+    }
+    public function PetMedia()
+    {
+        return $this->hasManyThrough(
+            PetMedia::class,
+            Pet::class,
+            'id', // clé étrangère dans la table pets
+            'pet_id', // clé étrangère dans la table pet_media
+            'pet_id', // clé locale dans search_sitters
+            'id' // clé locale dans pets
         );
     }
 

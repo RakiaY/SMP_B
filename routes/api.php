@@ -17,6 +17,7 @@ Route::post('/registerpetsitter', [AuthController::class, 'registerPetSitter']);
 Route::get('/pets/ByOwner/{id}', [PetController::class, 'getPetsByOwner']);
 Route::post('/pets/add', [PetController::class, 'addPet']);
 Route::post('/SearchSitter/add', [SearchSitterController::class, 'addSearch']);
+Route::get('/SearchSitter', [SearchSitterController::class, 'getSearchs']);
 
 
 // Routes protégées communes (update profiles, etc)
