@@ -19,6 +19,13 @@ Route::post('/pets/add', [PetController::class, 'addPet']);
 Route::post('/SearchSitter/add', [SearchSitterController::class, 'addSearch']);
 Route::get('/SearchSitter', [SearchSitterController::class, 'getSearchs']);
 
+// Gestion des recherches et postulations (mobile)
+Route::get('/SearchSitter', [SearchSitterController::class, 'getSearchs']);
+Route::put('/SearchSitter/update/{id}', [SearchSitterController::class, 'updateSearch']);
+Route::delete('/SearchSitter/delete/{id}', [SearchSitterController::class, 'deleteSearch']);
+Route::get('/SearchSitter/{id}', [SearchSitterController::class, 'getSearchById']);
+Route::get('/SearchSitter/search/{nameOrgardeType}', [SearchSitterController::class, 'getByOwnerName_StartDate']);
+
 
 // Routes protégées communes (update profiles, etc)
 Route::middleware(['auth:sanctum'])->group(function () {

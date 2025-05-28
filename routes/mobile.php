@@ -12,8 +12,6 @@ Route::put('/petowner/update/{id}', [PetOwnerController::class, 'updatePetOwner'
 Route::put('/petsitter/update/{id}', [PetSitterController::class, 'updatePetSitter']);
 
 
-
-
 // Gestion des recherches et postulations (mobile)
 Route::get('/SearchSitter', [SearchSitterController::class, 'getSearchs']);
 Route::put('/SearchSitter/update/{id}', [SearchSitterController::class, 'updateSearch']);
@@ -21,12 +19,17 @@ Route::delete('/SearchSitter/delete/{id}', [SearchSitterController::class, 'dele
 Route::get('/SearchSitter/{id}', [SearchSitterController::class, 'getSearchById']);
 Route::get('/SearchSitter/search/{nameOrgardeType}', [SearchSitterController::class, 'getByOwnerName_StartDate']);
 
+
 // Gestion des animaux (mobile)
-Route::post('/pets/add', [PetController::class, 'addPet']);
-Route::put('/pets/update/{id}', [PetController::class, 'updatePet']);
-Route::delete('/pets/delete/{id}', [PetController::class, 'deletePet']);
-Route::get('/pets/owner/{id}', [PetController::class, 'getPetsByOwner']);
-Route::get('/pets/search/{type_name_gender}', [PetController::class, 'searchByTypeNameGender']);
+Route::middleware(['auth:sanctum','role:petowner'])->group(function () {
+    Route::get('/pets', [PetController::class, 'getPets']);
+    Route::get('/pets/{id}', [PetController::class, 'getPetById']);
+    Route::post('/pets/add', [PetController::class, 'addPet']);
+    Route::put('/pets/update/{id}', [PetController::class, 'updatePet']);
+    Route::delete('/pets/delete/{id}', [PetController::class, 'deletePet']);
+    Route::get('/pets/owner/{id}', [PetController::class, 'getPetsByOwner']);
+    Route::get('/pets/search/{type_name_gender}', [PetController::class, 'searchByTypeNameGender']);
+});
 
 Route::post('/postulations/add', [PostulationController::class, 'addPostulation']);
 Route::get('/postulations', [PostulationController::class, 'getPostulations']);

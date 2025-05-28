@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class SearchSitter extends Model
 {
     protected $table = 'search_pet_sitters';
+    
     protected $fillable = [
         'user_id',
         'pet_id',
@@ -20,6 +21,12 @@ class SearchSitter extends Model
         'remunerationMin',
         'remunerationMax',
         'passages_per_day'
+        // Champs spécifiques pour "chez_proprietaire"
+        // 'slots' sera géré par la relation hasMany
+        // 'slots' => 'required_if:care_type,chez_proprietaire|array',
+        // 'slots.*.start_time' => 'required_if:care_type,chez_proprietaire|date',
+        // 'slots.*.end_time' => 'required_if:care_type,chez_proprietaire|date|after:slots.*.start_time',
+        // 'slots.*.slot_order' => 'required_if:care_type,chez_proprietaire|integer',
     ];
     protected $casts = [
         'start_date' => 'date',

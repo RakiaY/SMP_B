@@ -22,10 +22,6 @@ class SearchResource extends JsonResource
             'pet_name' => $this->pet->name,
             'pet_type' => $this->pet->type,
             'photo_profil' => $this->PetMedia->where('is_thumbnail', true)->first() ? $this->PetMedia->where('is_thumbnail', true)->first()->media_patth : null,
-
-                        
-
-
                 'adresse' => $this->adresse,
                 'latitude' => $this->latitude,
                 'longitude' => $this->longitude,
