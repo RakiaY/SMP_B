@@ -29,9 +29,9 @@ class SearchSitterController extends Controller
             'remunerationMin'    => 'required|numeric|min:0',
             'remunerationMax'    => 'nullable|numeric|min:0|gte:remunerationMin',
             'passages_per_day'   => 'required_if:care_type,chez_proprietaire|integer|min:1',
-            'slots'              => 'required_if:care_type,chez_proprietaire|array|min:1',
-            'slots.*.start_time' => 'required_if:care_type,chez_proprietaire|date',
-            'slots.*.end_time'   => 'required_if:care_type,chez_proprietaire|date|after:slots.*.start_time',
+            'slots'               => 'required_if:care_type,chez_proprietaire|array|min:1',
+            'slots.*.start_time'  => 'required_if:care_type,chez_proprietaire|date_format:H:i',
+            'slots.*.end_time'    => 'required_if:care_type,chez_proprietaire|date_format:H:i|after:slots.*.start_time',
         ]);
 
         if ($data['care_type'] === 'chez_proprietaire') {
@@ -62,8 +62,12 @@ class SearchSitterController extends Controller
         $search->load(['user','pet','slots','PetMedia']);
 
         return response()->json([
-            'searchSitter' => new SearchResource($search),
-        ]);
+            'success' => true,
+            'message' => 'Search created successfully',
+            'data' => [
+                'searchSitter' => new SearchResource($search),
+            ]
+        ], 201);
     }
 
     /**
@@ -122,8 +126,12 @@ class SearchSitterController extends Controller
         $search->load(['user','pet','slots','PetMedia']);
 
         return response()->json([
-            'searchSitter' => new SearchResource($search),
-        ]);
+            'success' => true,
+            'message' => 'Search updated successfully',
+            'data' => [
+                'searchSitter' => new SearchResource($search),
+            ]
+        ], 201);
     }
 
     /**

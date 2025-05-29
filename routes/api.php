@@ -16,6 +16,10 @@ Route::post('/registerpetsitter', [AuthController::class, 'registerPetSitter']);
 
 Route::get('/pets/ByOwner/{id}', [PetController::class, 'getPetsByOwner']);
 Route::post('/pets/add', [PetController::class, 'addPet']);
+Route::delete('/pets/delete/{id}', [PetController::class, 'deletePet']);
+Route::put('/pets/update/{id}', [PetController::class, 'updatePet']);
+Route::get('/pets/{id}', [PetController::class, 'getPetById']);
+
 Route::post('/SearchSitter/add', [SearchSitterController::class, 'addSearch']);
 Route::get('/SearchSitter', [SearchSitterController::class, 'getSearchs']);
 
