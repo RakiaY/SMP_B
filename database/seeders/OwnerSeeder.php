@@ -22,6 +22,7 @@ class OwnerSeeder extends Seeder
                 'last_name' => $lastNames[$i - 1],
                 'email' => "owner{$i}@example.com",
                 'password' => 'Owner123',
+                'status' => 'Active',
             ]);
 
             $user->assignRole('petowner');
