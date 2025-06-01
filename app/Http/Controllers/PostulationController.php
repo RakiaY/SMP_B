@@ -119,6 +119,24 @@ public function searchBySitter($sitter){
         ]);
     }
 
+    public function accept($id)
+    {
+        $postulation = Postulation::findOrFail($id);
+        $postulation->statut = 'validée';
+        $postulation->save();
+
+        return response()->json(['message' => 'Postulation accepted']);
+    }
+
+    public function decline($id)
+    {
+        $postulation = Postulation::findOrFail($id);
+        $postulation->statut = 'annulée';
+        $postulation->save();
+
+        return response()->json(['message' => 'Postulation declined']);
+    }
+
 
 }
 

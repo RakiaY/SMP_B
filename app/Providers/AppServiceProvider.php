@@ -6,6 +6,11 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use Spatie\Permission\Middleware\RoleMiddleware;
 use Spatie\Permission\Middleware\PermissionMiddleware;
+use Illuminate\Support\Facades\Gate;
+use App\Models\Thread;
+use App\Policies\ThreadPolicy;
+use App\Models\Postulation;
+use App\Observers\PostulationObserver;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -16,6 +21,10 @@ class AppServiceProvider extends ServiceProvider
 
     public function boot()
     {
+        // tell Eloquent to fire our observer
+        Postulation::observe(PostulationObserver::class);
+        Gate::policy(Thread::class, ThreadPolicy::class);
+
         // Charger les routes de l'API
         Route::middleware(['api', 'auth:sanctum'])
             ->prefix('api')

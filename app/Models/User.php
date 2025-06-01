@@ -87,7 +87,10 @@ public function kennelAddress()
 }
 
 
-// app/Models/User.php
+public function petbotMessages()
+{
+    return $this->hasMany(PetBotMessage::class);
+}
 
 public function postulation()
 {

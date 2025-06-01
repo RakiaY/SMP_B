@@ -133,6 +133,7 @@ private function getMediaType($mimeType)
 }
     public function updatePet(updatePetRequest $request, $pet_id)
     {
+        Log::info('UPDATE payload', $request->all());
         $pet = Pet::findOrFail($pet_id);
         $data = $request->validated();
     
@@ -148,7 +149,7 @@ private function getMediaType($mimeType)
         // Mise à jour
         $pet->update($data);
     
-        return response()->json(['pet' => new PetResource($pet)]);
+        return response()->json(['pet' => new PetResource($pet),]);
     }
     public function deletePet($pet_id)
     {
