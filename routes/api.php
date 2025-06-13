@@ -14,6 +14,7 @@ use App\Http\Controllers\ChatController;
 use App\Http\Controllers\ChatBotController;
 
 
+
 // Routes pour les API ChatBot
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/petbot/messages', [ChatBotController::class, 'index']);
@@ -28,6 +29,8 @@ Route::middleware('auth:sanctum')->group(function(){
 
 // Routes publiques
 Route::post('/login', action: [AuthController::class, 'Userlogin']);
+Route::post('/user/login', action: [AuthController::class, 'Userlogin']);
+Route::post('/user/logout', action: [AuthController::class, 'logout']);
 Route::post('/adminlogin', action: [AuthController::class, 'Adminlogin']);
 Route::post('/registerpetowner', [AuthController::class, 'registerPetOwner']);
 Route::post('/registerpetsitter', [AuthController::class, 'registerPetSitter']);
